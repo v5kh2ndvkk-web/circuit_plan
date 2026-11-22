@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKDSE 中六級物理科｜模擬試後概念重構互動教案</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Inter & Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- KaTeX for Crisp Physics Formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- QRCode.js for Offline/Instant QR Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        /* LED Equipotential Badges */
+        .led-pink {
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+            color: #be185d;
+            border: 1px solid #f9a8d4;
+            box-shadow: 0 0 8px rgba(236, 72, 153, 0.2);
+        }
+        .led-yellow {
+            background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+            color: #a16207;
+            border: 1px solid #fde047;
+            box-shadow: 0 0 8px rgba(234, 179, 8, 0.25);
+        }
+        .led-blue {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+        }
+        /* Active Stage Card Highlight */
+        .stage-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stage-card.active-stage {
+            border-color: #4f46e5;
+            box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.15), 0 8px 10px -6px rgba(79, 70, 229, 0.1);
+        }
+        /* KaTeX inline alignment polish */
+        .katex {
+            font-size: 1.03em;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Print Optimization */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+            }
+            .tab-panel {
+                display: block !important;
+                margin-bottom: 2rem;
+            }
+            .stage-card {
+                break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Top Sticky 35-Min Classroom Control Bar (Light Theme) -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur text-slate-900 shadow-sm border-b border-slate-200 no-print">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <!-- Brand & Lesson Title -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm shrink-0">
+                        <i class="fa-solid fa-bolt text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200">HKDSE 物理科</span>
+                            <span class="text-xs text-slate-500 font-medium">中六（$17$ 人）｜ $2026$ 年 $11$ 月 $24$ 日 ｜ $35$ 分鐘單節課</span>
+                        </div>
+                        <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight mt-0.5">模擬試後概念重構：串／並聯電勢分佈與電壓判斷</h1>
+                    </div>
+                </div>
+
+                <!-- Live 35-Minute Timer & Quick Tools -->
+                <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+                    <!-- Timer Display -->
+                    <div class="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 gap-3">
+                        <div class="text-right">
+                            <div class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold" id="timer-stage-label">階段 1｜引入診斷</div>
+                            <div class="font-mono text-lg sm:text-xl font-extrabold tracking-tight text-emerald-600" id="timer-display">00:00 <span class="text-xs font-normal text-slate-400">/ 35:00</span></div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button onclick="toggleTimer()" id="btn-timer-toggle" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-play" id="icon-timer-toggle"></i>
+                                <span id="text-timer-toggle">開始</span>
+                            </button>
+                            <button onclick="adjustTime(60)" title="快進 1 分鐘" class="p-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-semibold transition">
+                                +1m
+                            </button>
+                            <button onclick="resetTimer()" title="重設計時器" class="p-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 text-xs transition">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Classroom Utility Buttons -->
+                    <a href="https://v5kh2ndvkk-web.github.io/circuit_ws/" target="_blank" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm" title="開啟線上互動學生工作紙">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span class="hidden md:inline">開啟學生工作紙</span>
+                    </a>
+                    <button onclick="openQrModal()" class="px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-xs transition flex items-center gap-1.5 shadow-sm border border-amber-500/30">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span class="hidden sm:inline">雙平台 QR 投屏</span>
+                    </button>
+                    <button onclick="openPickerModal()" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-shuffle"></i>
+                        <span class="hidden sm:inline">隨機抽籤</span>
+                    </button>
+                    <button onclick="window.print()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-xs transition" title="列印教案">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5-Stage Visual Timeline Scrubber -->
+            <div class="mt-3 pt-2.5 border-t border-slate-200">
+                <div class="grid grid-cols-5 gap-1.5 text-[11px]">
+                    <button onclick="jumpToStage(1, 0)" id="nav-stage-1" class="stage-pill text-left px-2.5 py-1.5 rounded-lg bg-indigo-50 border border-indigo-400 text-indigo-900 font-bold transition hover:bg-indigo-100 truncate">
+                        <span class="opacity-75">$0\text{–}3\text{m}$</span> ① 引入診斷
+                    </button>
+                    <button onclick="jumpToStage(2, 3)" id="nav-stage-2" class="stage-pill text-left px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-medium transition hover:bg-slate-200/70 truncate">
+                        <span class="opacity-75">$3\text{–}12\text{m}$</span> ② LED 等勢圖
+                    </button>
+                    <button onclick="jumpToStage(3, 12)" id="nav-stage-3" class="stage-pill text-left px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-medium transition hover:bg-slate-200/70 truncate">
+                        <span class="opacity-75">$12\text{–}19\text{m}$</span> ③ 電壓與歐姆定律
+                    </button>
+                    <button onclick="jumpToStage(4, 19)" id="nav-stage-4" class="stage-pill text-left px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-medium transition hover:bg-slate-200/70 truncate">
+                        <span class="opacity-75">$19\text{–}27\text{m}$</span> ④ 混聯電壓拆解
+                    </button>
+                    <button onclick="jumpToStage(5, 27)" id="nav-stage-5" class="stage-pill text-left px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-medium transition hover:bg-slate-200/70 truncate">
+                        <span class="opacity-75">$27\text{–}35\text{m}$</span> ⑤ 實戰闖關評估
+                    </button>
+                </div>
+                <!-- Continuous Progress Bar -->
+                <div class="w-full h-1.5 bg-slate-200 rounded-full mt-2 overflow-hidden">
+                    <div id="timeline-progress-bar" class="h-full bg-gradient-to-r from-pink-500 via-amber-400 to-blue-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container with Left-Hand Navigation Sidebar -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+        <div class="flex flex-col lg:flex-row items-start gap-6">
+
+            <!-- LEFT-HAND SIDEBAR NAVIGATION -->
+            <aside class="w-full lg:w-64 shrink-0 lg:sticky lg:top-32 space-y-4 no-print">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 space-y-1.5">
+                    <div class="px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+                        教案導覽分頁
+                    </div>
+                    <button onclick="switchTab('pgde')" id="tab-btn-pgde" class="tab-btn w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm bg-indigo-600 text-white shadow-sm transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-table-list w-4 text-center"></i>
+                        <span>傳統標準教案（首頁）</span>
+                    </button>
+                    <button onclick="switchTab('flow')" id="tab-btn-flow" class="tab-btn w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm bg-white text-slate-700 hover:bg-slate-100 transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-list-check w-4 text-center text-indigo-600"></i>
+                        <span>$35$ 分鐘互動詳案</span>
+                    </button>
+                    <button onclick="switchTab('constructivism')" id="tab-btn-constructivism" class="tab-btn w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm bg-white text-slate-700 hover:bg-slate-100 transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-brain w-4 text-center text-rose-600"></i>
+                        <span>學情診斷與教學目標</span>
+                    </button>
+                    <button onclick="switchTab('matrix')" id="tab-btn-matrix" class="tab-btn w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm bg-white text-slate-700 hover:bg-slate-100 transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-diagram-project w-4 text-center text-amber-600"></i>
+                        <span>學習目標與工具對接</span>
+                    </button>
+                    <button onclick="switchTab('game')" id="tab-btn-game" class="tab-btn w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm bg-white text-slate-700 hover:bg-slate-100 transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-gamepad w-4 text-center text-emerald-600"></i>
+                        <span>《電路四區圖鑑》評估</span>
+                    </button>
+                </div>
+
+                <!-- Quick LED Visual Rules Reference (Light Theme) -->
+                <div class="bg-indigo-50/80 rounded-2xl p-4 border border-indigo-200 space-y-2.5">
+                    <div class="text-xs font-extrabold text-indigo-900 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb text-amber-500"></i> 三色 LED 電壓判準口訣
+                    </div>
+                    <div class="flex flex-col gap-1.5 text-[11px] font-bold">
+                        <span class="led-pink px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-pink-600"></span> 粉紅＝高電勢
+                        </span>
+                        <span class="led-yellow px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-yellow-500"></span> 黃色＝中電勢
+                        </span>
+                        <span class="led-blue px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-blue-600"></span> 藍色＝低電勢
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-700 leading-relaxed pt-1 border-t border-indigo-200/70">
+                        <strong>同色等勢（$\Delta V = 0$）</strong>｜<strong>色差即電壓</strong>｜<strong>先定電壓再用 $I = \Delta V / R$</strong>
+                    </p>
+                </div>
+
+                <!-- Online Worksheet Quick Reference Card -->
+                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
+                    <div class="text-xs font-extrabold text-slate-900 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-laptop-code text-indigo-600"></i> 線上工作紙控制台</span>
+                        <a href="https://v5kh2ndvkk-web.github.io/circuit_ws/" target="_blank" class="text-[11px] text-indigo-600 hover:underline font-bold">開啟 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+                    </div>
+                    <div class="text-[11px] text-slate-600 space-y-1 leading-relaxed">
+                        <p>• <strong>網址：</strong><span class="font-mono text-indigo-700">.../circuit_ws/</span></p>
+                        <p>• <strong>教師解鎖密碼：</strong><code class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-bold">$1124$</code>（解鎖參考答案及 A4 PDF 匯出）</p>
+                        <p>• <strong>內置教具：</strong>點擊 LED 光條變色、一鍵演示全圖色區、繁中／English 雙語切換及統一三色電勢標示（粉紅／黃／藍）。</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- RIGHT CONTENT AREA -->
+            <div class="flex-1 min-w-0 w-full space-y-6">
+
+                <!-- TAB 1 (DEFAULT HOME): Traditional Standard Lesson Plan (PGDE 4-Column Format) -->
+                <div id="tab-panel-pgde" class="tab-panel space-y-6">
+                    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-indigo-50 text-indigo-950 px-6 py-4 border-b border-indigo-200 flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <h2 class="text-base sm:text-lg font-extrabold text-indigo-950">物理科教案</h2>
+                                <p class="text-xs text-slate-600 mt-0.5">聚焦「判斷電路不同位置的電勢與電壓分佈」，建立有效的電路分析與歐姆定律應用能力</p>
+                            </div>
+                            <button onclick="window.print()" class="no-print px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-print"></i> 列印教案
+                            </button>
+                        </div>
+
+                        <!-- Part A: Formal Header Table -->
+                        <div class="p-6 border-b border-slate-200">
+                            <table class="w-full border-collapse border border-slate-300 text-xs sm:text-sm">
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 w-28 text-slate-800">日期</td>
+                                        <td class="border border-slate-300 px-3 py-2.5 w-1/3 text-slate-900">$24\ /\ 11\ /\ 2026$</td>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 w-28 text-slate-800">時間</td>
+                                        <td class="border border-slate-300 px-3 py-2.5 text-slate-900">單節課（共 $35$ 分鐘）</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 text-slate-800">授課科目</td>
+                                        <td class="border border-slate-300 px-3 py-2.5 text-slate-900">物理</td>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 text-slate-800">授課年級</td>
+                                        <td class="border border-slate-300 px-3 py-2.5 font-bold text-slate-900">中六</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 text-slate-800">授課語言</td>
+                                        <td class="border border-slate-300 px-3 py-2.5 text-slate-900">中文</td>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 text-slate-800">學生人數</td>
+                                        <td class="border border-slate-300 px-3 py-2.5 font-bold text-slate-900">$17$ 人</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 text-slate-800">主題</td>
+                                        <td colspan="3" class="border border-slate-300 px-3 py-2.5 font-bold text-slate-900">電路分析重構——串／並聯電勢分佈與電壓判斷</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 align-top text-slate-800">課堂目標</td>
+                                        <td colspan="3" class="border border-slate-300 px-3 py-2.5 space-y-1.5 leading-relaxed text-slate-800">
+                                            <div>$1)$ <strong>建立電勢視覺模型：</strong>透過 POE 策略破除「電流消耗論」，理解「理想導線零電阻 $\Rightarrow$ 同色等勢（$\Delta V = 0$）」，並能分辨串聯分壓與並聯等壓的電壓分佈規律。</div>
+                                            <div>$2)$ <strong>掌握電壓判斷與歐姆定律應用：</strong>引導學生學會先透過節點電勢差（色差）判斷電路不同元件兩端的真實電壓 $\Delta V$，再正確代入歐姆定律（$I = \Delta V / R$）進行電路分析。</div>
+                                            <div>$3)$ <strong>混聯結構拆解與題型遷移：</strong>能運用等勢分色法拆解串並聯混聯電路各部分的電壓分配，並遷移至《電路四區圖鑑》考題原型完成檢核與反思。</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 bg-slate-100 font-bold px-3 py-2.5 align-top text-slate-800">已有知識</td>
+                                        <td colspan="3" class="border border-slate-300 px-3 py-2.5 space-y-2 leading-relaxed text-slate-800">
+                                            <div>
+                                                <strong>$1)$ 基本電路符號與閉合迴路概念：</strong>學生已能辨識電池（電源）、導線及定值電阻的標準電路符號，並理解電流必須在閉合迴路中流動。<br>
+                                                <span class="text-indigo-700 text-xs font-medium">$\hookrightarrow$ 如何幫助掌握本課內容：作為閱讀電路圖的起點，讓學生能迅速鎖定電源正負極（高電勢起點與低電勢終點）及電流路徑，為後續用三色 LED 標定節點電勢建立空間框架。</span>
+                                            </div>
+                                            <div>
+                                                <strong>$2)$ 電流（$I$）、電壓／電勢差（$V$）與電阻（$R$）的基本物理意義：</strong>學生於中五已學習電壓是推動電荷流動的電勢差，而電阻會阻礙電流流動，並掌握基本單位（$\text{A}$、$\text{V}$、$\Omega$）。<br>
+                                                <span class="text-indigo-700 text-xs font-medium">$\hookrightarrow$ 如何幫助掌握本課內容：學生已具備「有電勢差才能驅動電流」的基礎概念，教師只需將抽象的「電勢高低」具象化為「三色 LED 顏色」，便能順理成章引導學生理解「同色導線等勢（$\Delta V = 0$）」及「跨過電阻產生電壓降（轉色）」。</span>
+                                            </div>
+                                            <div>
+                                                <strong>$3)$ 歐姆定律公式（$V = IR$）與基本串／並聯規則：</strong>學生已記住歐姆定律公式 $V = IR$，並對「串聯電路電流處處相等」及「並聯電路總電流等於各支路電流之和」有初步認識。<br>
+                                                <span class="text-indigo-700 text-xs font-medium">$\hookrightarrow$ 如何幫助掌握本課內容：學生無需重新背誦新公式，本課只需聚焦補齊「如何從電路圖判斷個別元件兩端真實電壓 $\Delta V$」這一關鍵步驟，即可直接激活他們已有的 $V = IR$ 公式知識，轉化為有效的電路計算能力。</span>
+                                            </div>
+                                            <div>
+                                                <strong>$4)$ 日常顏色對比與階梯次序的直覺認知：</strong>具備直觀分辨顏色異同與色彩階梯變化（暖色過渡至冷色）的生活經驗。<br>
+                                                <span class="text-indigo-700 text-xs font-medium">$\hookrightarrow$ 如何幫助掌握本課內容：作為建構主義「最近發展區（ZPD）」的視覺橋樑，讓數理基礎較弱的學生先憑顏色相同或差異直觀判斷「等壓」與「分壓」，建立成功感後再過渡至定量計算。</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Part B: 4-Column Lesson Flow Table -->
+                        <div class="p-6 overflow-x-auto">
+                            <table class="w-full border-collapse border border-slate-300 text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-indigo-100 text-indigo-950 text-left">
+                                        <th class="border border-slate-300 px-3 py-3 w-28">時間</th>
+                                        <th class="border border-slate-300 px-3 py-3 w-44">目標</th>
+                                        <th class="border border-slate-300 px-3 py-3">課堂安排（教師活動、學生活動、階段小總結及評估進度）</th>
+                                        <th class="border border-slate-300 px-3 py-3 w-32">工具</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-300 align-top leading-relaxed">
+                                    <!-- Row 1: 0-3 min -->
+                                    <tr>
+                                        <td class="border border-slate-300 px-3 py-3 font-bold text-slate-800">$0\text{–}3$ 分鐘<br><span class="text-xs font-normal text-slate-500">（$3$ 分鐘）</span></td>
+                                        <td class="border border-slate-300 px-3 py-3 font-semibold text-indigo-900">
+                                            引入與痛點診斷：<br>
+                                            <span class="font-normal text-slate-700 text-xs">由學生點出閉合電路基本構成與電源作用，並透過線上工作紙「大富翁」類比互動圖建立「等勢」與「負極歸零」準則，銜接視覺等勢圖。</span>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 space-y-2">
+                                            <div>
+                                                <span class="font-bold text-slate-900">教師活動：</span>
+                                                <ol class="list-decimal list-inside text-slate-700 space-y-1 mt-0.5">
+                                                    <li><strong>派發線上工作紙與喚醒閉合電路構成：</strong>請學生開啟《電路學生工作紙》（<span class="font-mono text-indigo-700">circuit_ws</span>）階段 $1$，展示「大富翁棋盤 $\times$ 電勢變化對照」互動圖，明確設定<strong>「設電池負極為 $0\text{ V}$ 參考點」</strong>，請學生說出閉合電路基本構成（電源／電池、導線、負載電阻）及電池的作用（起點「GO」，為電荷提供<strong>電勢能</strong>，將電荷推上 $12\text{ V}$ 高電勢）。</li>
+                                                    <li><strong>大富翁類比「等勢」與歸零終點：</strong>點擊工作紙「演示等勢色區」（粉紅 $12\text{ V}$ 與藍色 $0\text{ V}$），引導學生思考：「設電池負極為 $0\text{ V}$ 參考點，經過起點『GO』拎咗 $\$12$ 之後，沿住無起樓嘅空地（理想導線）行，手頭上嘅錢（電勢）有冇變？踩中電阻『物業交租』後，<strong>回到電池負極嗰陣，電勢會降至幾多（即與負極之間的電勢差／電壓為幾多）</strong>？」從而建立「未跨過電阻或電源的相連導線為<strong>等勢（$\Delta V = 0\text{ V}$）</strong>」及「回到電池負極時電勢必降至 $0\text{ V}$」。</li>
+                                                    <li><strong>診斷 Mock 痛點並銜接下階段：</strong>指出 Mock 失分是因為未先判斷各段「資金（電勢）」就誤代 $12\text{ V}$，著學生完成階段 $1$ 填空與熱身前測第 $1$、$2$ 題，隨即預告用「三色 LED」把不同電勢區直接亮燈顯示。</li>
+                                                </ol>
+                                            </div>
+                                            <div>
+                                                <span class="font-bold text-slate-900">學生活動：</span>
+                                                <p class="text-slate-700 mt-0.5">在線上《電路學生工作紙》階段 $1$ 完成大富翁類比三項作答（圈選電池提供「<strong>電勢能</strong>」、填寫等勢路段電勢差 $\Delta V = 0\text{ V}$、回到負極電勢降至 $0\text{ V}$），並完成熱身前測第 $1$、$2$ 題選擇題（確認串聯電流不變、理想導線電勢差為 $0\text{ V}$）。</p>
+                                            </div>
+                                            <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-xs text-sky-950">
+                                                <span class="font-bold text-sky-800">【評估進度】：</span>透過口頭問答確認學生能說出電池提供電勢能，並準確指出「設電池負極為 $0\text{ V}$ 參考點下，未跨過電阻或電源的相連導線電勢差（電壓）為零（$\Delta V = 0\text{ V}$）」及「回到負極時電勢降至 $0\text{ V}$」，同時檢視工作紙階段 $1$ 填空與第 $1$、$2$ 題作答正確率（目標 $\ge 80\%$ 選對）。
+                                            </div>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 text-xs text-slate-700">
+                                            • 線上《電路學生工作紙》（<span class="font-mono">circuit_ws</span> 階段 $1$ 大富翁互動圖）<br>• 電腦投屏
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 2: 3-12 min -->
+                                    <tr>
+                                        <td class="border border-slate-300 px-3 py-3 font-bold text-slate-800">$3\text{–}12$ 分鐘<br><span class="text-xs font-normal text-slate-500">（$9$ 分鐘）</span></td>
+                                        <td class="border border-slate-300 px-3 py-3 font-semibold text-indigo-900">
+                                            視覺等勢重構：<br>
+                                            <span class="font-normal text-slate-700 text-xs">利用 POE 策略與三色 LED 地圖（教具 ①、② 及工作紙互動光條），建立「同色等勢、色差即電壓」的視覺判準。</span>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 space-y-2">
+                                            <div>
+                                                <span class="font-bold text-slate-900">教師活動：</span>
+                                                <ol class="list-decimal list-inside text-slate-700 space-y-1 mt-0.5">
+                                                    <li>演示<strong>教具 ① 串聯</strong>（並同步點擊工作紙階段 $2$ Part A「演示 LED 顏色」：$\text{LED } 1$ 粉紅 $\rightarrow$ $\text{LED } 2$ 黃 $\rightarrow$ $\text{LED } 3$ 藍），引導學生先預測（Predict）、再觀察（Observe）同一段導線是否漸變轉色，並歸納解釋（Explain）。</li>
+                                                    <li>演示<strong>教具 ② 並聯</strong>（Part B），著小組先在白板／工作紙點擊光條預測 $\text{LED } 4$、$5$、$6$ 顏色，再亮燈實測，引導學生純粹觀察起終點顏色（$\text{LED } 4$ 粉紅至 $\text{LED } 6$ 藍）證明 $V_{R1} = V_{R2} + V_{R3}$。</li>
+                                                </ol>
+                                            </div>
+                                            <div>
+                                                <span class="font-bold text-slate-900">學生活動：</span>
+                                                <p class="text-slate-700 mt-0.5">在《電路學生工作紙》階段 $2$ 任務一 Part A 完成 POE 紅筆圈選填空（歸納同一導線同色即「<strong>電勢</strong>」相同、跨過「<strong>電阻</strong>」才轉色、伏特計夾 $\text{LED } 1$ 頭尾讀數為「$0\text{ V}$」）；在 Part B 完成預測與實測表格及節點跨接證明。</p>
+                                            </div>
+                                            <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-950">
+                                                <span class="font-bold text-emerald-800">【階段小總結 ①】：</span>同一段理想導線同色（等勢，$\Delta V = 0$），跨阻才轉色；串聯電路各電阻分攤總電壓（梯級轉色），並聯支路因起終點跨接同色（$\text{LED } 4$ 與 $\text{LED } 6$）而電壓相等。
+                                            </div>
+                                            <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-xs text-sky-950">
+                                                <span class="font-bold text-sky-800">【評估進度】：</span>即時核對工作紙任務一 Part A 的 POE 圈選正確率，並巡視檢查全班 $17$ 位學生在 Part B 白板／工作紙上對 $\text{LED } 4$（粉紅／高）、$\text{LED } 5$（黃／中）、$\text{LED } 6$（藍／低）的節點填色是否準確。
+                                            </div>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 text-xs text-slate-700">
+                                            • 三色 LED 教具 ①、②<br>• 《電路學生工作紙》（階段 $2$ 任務一互動光條）<br>• 小組白板
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 3: 12-19 min -->
+                                    <tr>
+                                        <td class="border border-slate-300 px-3 py-3 font-bold text-slate-800">$12\text{–}19$ 分鐘<br><span class="text-xs font-normal text-slate-500">（$7$ 分鐘）</span></td>
+                                        <td class="border border-slate-300 px-3 py-3 font-semibold text-indigo-900">
+                                            定性轉定量過渡與差異化鷹架：<br>
+                                            <span class="font-normal text-slate-700 text-xs">逐一剖析《電路四區圖鑑》$4$ 個情景，示範由色差推算 $\Delta V$ 再代入 $I = \Delta V / R$，並以「短挑戰題 ①（三色 LED 等勢連線）」照顧學習差異。</span>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 space-y-2">
+                                            <div>
+                                                <span class="font-bold text-slate-900">教師活動：</span>
+                                                <p class="text-slate-700 mt-0.5">利用《電路學生工作紙》階段 $3$ 任務二的四區互動電路圖（設電池負極為 $0\text{ V}$ 參考點，電源均為 $12\text{ V}$：粉紅 $= 12\text{ V}$、藍色 $= 0\text{ V}$），點擊各區「演示 LED」帶領學生把色差轉為定量電壓 $\Delta V$：</p>
+                                                <ul class="list-disc list-inside text-slate-700 space-y-1.5 mt-1 pl-1">
+                                                    <li><strong>情景 ①（南區：純串聯分壓）：</strong>$R_1 = 2\ \Omega$、$R_2 = 4\ \Omega$ 串聯（總阻 $6\ \Omega$，電流 $2\text{ A}$）。$V_{R1} = IR_1 = 4\text{ V}$，中間黃色導線為 $8\text{ V}$，故 $\Delta V_{R2} = 8\text{ V}$。</li>
+                                                    <li><strong>情景 ②（東區：並聯等壓與分流）：</strong>$R_1 = 6\ \Omega$、$R_2 = 3\ \Omega$ 均跨接粉紅與藍，直接確定 $\Delta V_1 = \Delta V_2 = 12\text{ V}$，代入 $I = \Delta V / R$ 得 $I_1 = 2\text{ A}$、$I_2 = 4\text{ A}$。</li>
+                                                    <li><strong>情景 ③（北區：混聯與開關 $S_1$ 閉合）：</strong>$S_1$ 閉合將 $L_2$ 兩端連成同色（藍色 $0\text{ V}$），故 $\Delta V_{L2} = 0\text{ V}$；全部 $12\text{ V}$ 集中於 $L_1 = 4\ \Omega$，幹線電流 $I = 12 / 4 = 3\text{ A}$。</li>
+                                                    <li><strong>情景 ④（西區：經典串並聯混聯）：</strong>$X = 4\ \Omega$、$Y = 4\ \Omega$ 並聯（$R_{XY} = 2\ \Omega$）串聯 $R_5 = 2\ \Omega$（總阻 $4\ \Omega$，總電流 $3\text{ A}$）。$V_{R5} = 3 \times 2 = 6\text{ V}$（黃節點 $6\text{ V}$），故 $\Delta V_{XY} = 6\text{ V}$，支路電流 $I_X = 6 / 4 = 1.5\text{ A}$。</li>
+                                                    <li><strong>【照顧學習差異｜短挑戰題 ①（沿用三色 LED 等勢法）】：</strong>引導能力較高或需要視覺拆解跨接電路的學生，沿用全課統一的<strong>三色 LED（粉紅／黃／藍）</strong>，在 $\text{X}—3\ \Omega—3\ \Omega—1.5\ \Omega—\text{Y}$ 跨接電路點擊填色（與 $\text{X}$ 相連導線標為粉紅、與 $\text{Y}$ 相連導線標為藍色，本題只需用到粉紅與藍兩色），發現三個電阻實為<strong>並聯</strong>（$R_{XY} = 0.75\ \Omega$，$I_{1.5\Omega} = 8\text{ A}$）。</li>
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <span class="font-bold text-slate-900">學生活動：</span>
+                                                <p class="text-slate-700 mt-0.5">在《電路學生工作紙》階段 $3$ 任務二點擊各區「演示 LED」並完成四區定量填空；提早完成的同學或需要視覺輔助的同學完成「短挑戰題 ①」等勢填色與並聯計算。</p>
+                                            </div>
+                                            <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-950">
+                                                <span class="font-bold text-emerald-800">【階段小總結 ②】：</span>無論面對南、東、北、西四區或跨接電路，運用歐姆定律必守「兩步法」：① 先用顏色找出元件兩端電勢並相減，得出真實電壓 $\Delta V$（同色則 $\Delta V = 0\text{ V}$）；② 再代入 $I = \Delta V / R$ 計算電流。
+                                            </div>
+                                            <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-xs text-sky-950">
+                                                <span class="font-bold text-sky-800">【評估進度】：</span>檢視工作紙任務二四區數值填寫準確度，抽問 $2\text{–}3$ 名學生口述各區 $\Delta V$ 算式，並巡視「短挑戰題 ①」中學生是否能憑粉紅與藍色跨接識別出三個電阻並聯。
+                                            </div>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 text-xs text-slate-700">
+                                            • 《電路學生工作紙》（階段 $3$ 任務二四區互動圖及短挑戰題 ① 三色 LED 等勢圖）
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 4: 19-27 min -->
+                                    <tr>
+                                        <td class="border border-slate-300 px-3 py-3 font-bold text-slate-800">$19\text{–}27$ 分鐘<br><span class="text-xs font-normal text-slate-500">（$8$ 分鐘）</span></td>
+                                        <td class="border border-slate-300 px-3 py-3 font-semibold text-indigo-900">
+                                            DSE 實戰遷移：<br>
+                                            <span class="font-normal text-slate-700 text-xs">運用三色等勢分區拆解混聯電路（工作紙階段 $4$ 任務三），逐區求電壓並應用歐姆定律。</span>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 space-y-2">
+                                            <div>
+                                                <span class="font-bold text-slate-900">教師活動：</span>
+                                                <ol class="list-decimal list-inside text-slate-700 space-y-1 mt-0.5">
+                                                    <li>呈現《電路學生工作紙》階段 $4$ 任務三混聯電路（$12\text{ V}$ 理想電池，$R_1 = 4.0\ \Omega$、$R_2 = 4.0\ \Omega$ 並聯於 $\text{P}$、$\text{Q}$，再與幹路 $R_3 = 3.0\ \Omega$ 串聯），引導小組先點擊光條標出<strong>粉紅（點 $\text{P}$）</strong>、<strong>黃色（節點 $\text{Q}$）</strong>、<strong>藍色（點 $\text{R}$）</strong>三個等勢區。</li>
+                                                    <li>引導按三步法推導：先求 $R_{PQ} = 2.0\ \Omega$ 與總電流 $2.4\text{ A}$，算出幹路 $V_{R3} = 7.2\text{ V}$ 後，相減得出節點 $\text{Q}$ 電勢 $4.8\text{ V}$（即 $\Delta V_{PQ} = 4.8\text{ V}$），再用歐姆定律求下支路安培計 $\text{A}$ 讀數 $I_{R2} = 1.2\text{ A}$。</li>
+                                                </ol>
+                                            </div>
+                                            <div>
+                                                <span class="font-bold text-slate-900">學生活動：</span>
+                                                <p class="text-slate-700 mt-0.5">小組協作完成《電路學生工作紙》階段 $4$ 任務三的光條填色、步驟一結構圈選，以及步驟二、三的分步電壓與支流計算。</p>
+                                            </div>
+                                            <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-950">
+                                                <span class="font-bold text-emerald-800">【階段小總結 ③】：</span>混聯電路分析「三步法」：① 填色分區（跨接同色者為並聯等壓）；② 求並聯等效電阻與幹路總電流；③ 逐區計算電壓 $\Delta V$，再用歐姆定律求各支路電流。
+                                            </div>
+                                            <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-xs text-sky-950">
+                                                <span class="font-bold text-sky-800">【評估進度】：</span>查核各小組在工作紙任務三的分步數據（$R_{PQ} = 2.0\ \Omega$、$R_{\text{總}} = 5.0\ \Omega$、$I_{\text{總}} = 2.4\text{ A}$、$V_{R3} = 7.2\text{ V}$、$\Delta V_{PQ} = 4.8\text{ V}$ 及 $I_{R2} = 1.2\text{ A}$），確認學生按色區求得支路電壓而非誤代 $12\text{ V}$。
+                                            </div>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 text-xs text-slate-700">
+                                            • 《電路學生工作紙》（階段 $4$ 任務三三色 LED 混聯互動圖）
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 5A: 27-33 min -->
+                                    <tr>
+                                        <td class="border border-slate-300 px-3 py-3 font-bold text-slate-800">$27\text{–}33$ 分鐘<br><span class="text-xs font-normal text-slate-500">（$6$ 分鐘）</span></td>
+                                        <td class="border border-slate-300 px-3 py-3 font-semibold text-indigo-900">
+                                            課堂形成性評估：<br>
+                                            <span class="font-normal text-slate-700 text-xs">完成工作紙任務四是非題後，透過網頁遊戲限時闖關並勾選通關進度，評估電壓判斷與歐姆定律掌握度。</span>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 space-y-2">
+                                            <div>
+                                                <span class="font-bold text-slate-900">教師活動：</span>
+                                                <p class="text-slate-700 mt-0.5">著學生先完成《電路學生工作紙》階段 $5$ 任務四第 $1$ 題是非判斷，隨即投影《電路四區圖鑑》小遊戲（<span class="font-mono text-indigo-700">circuit</span>）QR Code，限時 $6$ 分鐘挑戰南區、東區、北區及西區四個考題原型，巡視並指導卡關同學。</p>
+                                            </div>
+                                            <div>
+                                                <span class="font-bold text-slate-900">學生活動：</span>
+                                                <p class="text-slate-700 mt-0.5">圈選任務四第 $1$ 題是非判斷（「✔ 正確」：用 $I = \Delta V / R$ 前必須先判斷真實 $\Delta V$），掃碼進入遊戲闖關，每通關一區即在工作紙任務四第 $2$ 題「通關勾選」欄打勾紀錄。</p>
+                                            </div>
+                                            <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-xs text-sky-950">
+                                                <span class="font-bold text-sky-800">【評估進度】：</span>即時統計全班 $17$ 人在網頁遊戲四個考區的通關完成率與錯誤集中點（重點觀察北區開關等勢與西區混聯分壓表現），並核對任務四第 $1$ 題是非判斷結果。
+                                            </div>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 text-xs text-slate-700">
+                                            • 《電路學生工作紙》（階段 $5$ 任務四）<br>• 網頁遊戲（<span class="font-mono">circuit</span>）與投影 QR Code
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 5B: 33-35 min (Final Summary) -->
+                                    <tr class="bg-amber-50/40">
+                                        <td class="border border-slate-300 px-3 py-3 font-bold text-slate-900">$33\text{–}35$ 分鐘<br><span class="text-xs font-normal text-slate-500">（$2$ 分鐘）</span></td>
+                                        <td class="border border-slate-300 px-3 py-3 font-extrabold text-amber-900">
+                                            課堂總結：<br>
+                                            <span class="font-normal text-slate-700 text-xs">收束核心分析法、進行變式快問，完成一句話反思並解鎖工作紙答案／匯出 PDF 供課後複習。</span>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 space-y-2">
+                                            <div>
+                                                <span class="font-bold text-slate-900">教師活動：</span>
+                                                <ol class="list-decimal list-inside text-slate-700 space-y-1 mt-0.5">
+                                                    <li><strong>總結核心原理：</strong>重申「同一導線同色等勢（$\Delta V = 0$）；先辨識元件兩端色差定出電壓 $\Delta V$，再代入歐姆定律 $I = \Delta V / R$」。</li>
+                                                    <li><strong>快速變式提問：</strong>「喺一個 $12\text{ V}$ 串聯電路入面，如果 $R_1$ 兩端電壓係 $4\text{ V}$，咁串聯喺後面嘅 $R_2$ 兩端電壓係幾多？如果將 $R_2$ 換成電阻值更大嘅電阻，佢分得嘅電壓會變大定變細？點解？」</li>
+                                                    <li><strong>反思收束與解鎖複習：</strong>著學生完成工作紙任務四第 $3$ 題「一句話反思」，教師可視需要公布解鎖密碼（<code class="font-mono font-bold">$1124$</code>）讓學生核對參考答案及匯出 A4 PDF 存檔，並預告下堂課將進階探討<strong>「多開關斷開與閉合的動態切換」及「電池內電阻（$r$）與非理想電錶」</strong>對節點電勢的影響。</li>
+                                                </ol>
+                                            </div>
+                                            <div>
+                                                <span class="font-bold text-slate-900">學生活動：</span>
+                                                <p class="text-slate-700 mt-0.5">口頭回應變式快問（$R_2$ 電壓為 $8\text{ V}$，換成更大電阻後根據 $V = IR$ 分得電壓會變大），於工作紙任務四完成「一句話反思」（<em>「以前我做電路題時常常……，今日透過等勢分色法我學會了……」</em>），並可一鍵匯出個人作答版 A4 PDF。</p>
+                                            </div>
+                                            <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-xs text-sky-950">
+                                                <span class="font-bold text-sky-800">【評估進度】：</span>透過變式快問的全班口頭回饋檢驗分壓遷移能力，並檢閱《電路學生工作紙》任務四「一句話反思」，檢核學生能否用自己的語言總結判斷電路電壓的關鍵步驟。
+                                            </div>
+                                        </td>
+                                        <td class="border border-slate-300 px-3 py-3 text-xs text-slate-700">
+                                            • 投屏總結卡<br>• 《電路學生工作紙》（任務四反思＋一鍵匯出 A4 PDF）
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TAB 2: 5-Stage Detailed Teaching Flow -->
+                <div id="tab-panel-flow" class="tab-panel hidden space-y-6">
+
+                    <!-- STAGE 1 -->
+                    <article id="stage-card-1" class="stage-card active-stage bg-white rounded-2xl shadow-sm border-2 border-indigo-500 overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-extrabold text-xs tracking-wide">階段 1｜$0\text{–}3$ 分鐘（$3$ 分鐘）</span>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">引入與 Mock 失分痛點診斷——大富翁「等勢」類比（Engage）</h2>
+                            </div>
+                            <button onclick="jumpToStage(1, 0)" class="no-print text-xs text-indigo-600 hover:text-indigo-800 font-semibold bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200 transition">
+                                <i class="fa-solid fa-stopwatch mr-1"></i>設定計時器至此
+                            </button>
+                        </div>
+
+                        <div class="p-5 space-y-4">
+                            <!-- 3-Column Core Focus, Objective & Progress Assessment -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="bg-sky-50/80 border border-sky-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-sky-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-crosshairs text-sky-600"></i> 階段教學重點
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">設定電池負極為 $0\text{ V}$ 參考點，由閉合電路基本構成與電池「賦予電勢能」的作用切入，藉「大富翁」類比建立「等勢」概念及判斷相同電勢的準則（相連無阻導線未跨過電阻即等勢，$\Delta V = 0\text{ V}$）。</p>
+                                </div>
+                                <div class="bg-violet-50/80 border border-violet-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-violet-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bullseye text-violet-600"></i> 階段教學目標
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">學生能說出電源在閉合電路中的作用，能區分單點「電勢」與兩點間「電勢差（電壓）」，並以大富翁類比判斷電路中哪些位置具有相同電勢（$\Delta V = 0$），自然銜接下一階段的三色 LED 視覺等勢地圖。</p>
+                                </div>
+                                <div class="bg-teal-50/80 border border-teal-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-teal-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-chart-simple text-teal-600"></i> 如何評估進度
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">確認學生能口頭說出「設電池負極為 $0\text{ V}$ 參考點，凡由無電阻導線直接相連、中間未跨過電阻或電源的路段，電勢相同且該路段電勢差（電壓）必為零（$\Delta V = 0\text{ V}$）」，並檢視工作紙階段 $1$ 熱身前測第 $1$、$2$ 題作答正確率（目標 $\ge 80\%$ 選對）。</p>
+                                </div>
+                            </div>
+
+                            <!-- Operation Flow (Light Theme) -->
+                            <div class="bg-indigo-50/70 text-slate-800 border border-indigo-200 rounded-xl p-3.5 text-sm flex items-start gap-3">
+                                <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-xs font-bold shrink-0 mt-0.5">操作流程</span>
+                                <p>投屏開啟線上《電路學生工作紙》（<a href="https://v5kh2ndvkk-web.github.io/circuit_ws/" target="_blank" class="text-indigo-700 font-bold underline font-mono">circuit_ws</a>）階段 $1$「大富翁電路類比」互動圖，明確聲明<strong>「設電池負極為 $0\text{ V}$ 參考點」</strong>，點擊「演示等勢色區」引導學生點出電路基本構成及電池作用（提供<strong>電勢能</strong>），明確辨識「未跨過電阻的相連導線路段＝等勢（$\Delta V = 0\text{ V}$）」以及「回到電池負極時電勢降至 $0\text{ V}$（即與負極間的電勢差／電壓為 $0\text{ V}$）」的判斷準則；隨即完成工作紙階段 $1$ 填空與熱身前測第 $1$、$2$ 題。</p>
+                            </div>
+
+                            <!-- Dialogue Scaffolding Grid -->
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between gap-2 mb-2">
+                                            <span class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                                                <i class="fa-solid fa-chalkboard-user text-amber-600"></i> 教師準備問的問題
+                                            </span>
+                                            <button onclick="openProjector('stage1')" class="no-print text-[11px] font-bold bg-amber-500 hover:bg-amber-600 text-white px-2.5 py-1 rounded-lg transition shadow-sm">
+                                                <i class="fa-solid fa-expand mr-1"></i>投屏放大
+                                            </button>
+                                        </div>
+                                        <ol class="list-decimal list-inside space-y-2 text-xs text-slate-800 leading-relaxed">
+                                            <li><strong>【電路構成與電源作用】</strong>：「望住工作紙階段 $1$ 幅大富翁電路圖，閉合電路有邊幾樣基本部分？粒 $12\text{ V}$ 電池（起點 GO）擔當咩角色？」</li>
+                                            <li><strong>【大富翁類比「等勢」與歸零終點】</strong>：「<strong>設電池負極為 $0\text{ V}$ 參考點</strong>，電荷經過起點『GO』拎到 $\$12$ 資金（$12\text{ V}$ 高電勢）之後，沿住無起樓嘅空地（理想導線）行，資金有冇變？點樣判斷電路邊啲地方係『等勢』？<strong>行完一圈回到電池負極嗰陣，電勢會降至幾多（即與負極之間的電勢差／電壓為幾多）？</strong>」</li>
+                                            <li><strong>【扣連 Mock 痛點】</strong>：「做完熱身前測第 $1$、$2$ 題後諗下：點解 Mock 卷有同學會直接將 $12\text{ V}$ 除以某一個電阻？」</li>
+                                        </ol>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-comments text-slate-500"></i> 學生可能回應對照
+                                    </div>
+                                    <div class="bg-rose-50 border border-rose-200 rounded-lg p-2.5 text-xs text-rose-900">
+                                        <span class="font-bold text-rose-700 block mb-0.5"><i class="fa-solid fa-xmark mr-1"></i>常見模糊／錯誤回應：</span>
+                                        「電池係用嚟製造新電荷（誤以為電荷由電池生出嚟）」；「導線入面有電流流過，所以行遠啲電勢就會慢慢跌少少」；「混淆單點電勢同兩點間電壓，唔肯定返到電池負極時電勢係幾多。」
+                                    </div>
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-900">
+                                        <span class="font-bold text-emerald-700 block mb-0.5"><i class="fa-solid fa-check mr-1"></i>目標概念回應：</span>
+                                        「閉合電路需要<strong>電源、導線同負載（電阻）</strong>，電池作用係提供<strong>電勢能</strong>（大富翁『GO』派資金）；<strong>設電池負極為 $0\text{ V}$ 參考點，凡由無電阻導線直接相連、中間未跨過任何電阻或電源的路段，電勢完全一樣（等勢），該段路段電勢差（電壓）$\Delta V = 0\text{ V}$；而電荷經過電阻交租後，回到電池負極時的電勢必降至 $0\text{ V}$（即與負極之間的電勢差／電壓亦為 $0\text{ V}$）</strong>！」
+                                    </div>
+                                </div>
+
+                                <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-indigo-800 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-hand-sparkles text-indigo-600"></i> 引導學生提問與銜接下階段
+                                    </div>
+                                    <div class="text-xs text-slate-700 leading-relaxed">
+                                        <span class="font-bold text-indigo-700">教師引導語（緊扣階段 $2$）：</span>「既然我哋知道大富翁棋盤上『未踩中地產（電阻）嘅相連道路都係等勢』，如果考卷幅電路圖畫到轉彎抹角，大家可以向我問一條關於『點樣將唔同電勢區視覺化』嘅問題。」
+                                    </div>
+                                    <div class="bg-white border border-indigo-200 rounded-lg p-2.5 text-xs text-slate-800">
+                                        <span class="font-bold text-indigo-600 block mb-0.5"><i class="fa-solid fa-circle-question mr-1"></i>預期學生提問：</span>
+                                        「如果電路有好多條支路或者幾個電阻，有冇方法好似喺大富翁棋盤填顏色咁，一眼睇出邊幾段導線係『等勢』、邊度先會跌電勢？」<span class="text-indigo-700 font-semibold">（教師順勢切入階段 $2$ 三色 LED 教具！）</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- STAGE 2 -->
+                    <article id="stage-card-2" class="stage-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 rounded-lg bg-indigo-100 text-indigo-900 border border-indigo-200 font-extrabold text-xs tracking-wide">階段 2｜$3\text{–}12$ 分鐘（$9$ 分鐘）</span>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">視覺重構——三色 LED 等勢地圖與電壓判準（Explore）</h2>
+                            </div>
+                            <button onclick="jumpToStage(2, 3)" class="no-print text-xs text-indigo-600 hover:text-indigo-800 font-semibold bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200 transition">
+                                <i class="fa-solid fa-stopwatch mr-1"></i>設定計時器至此
+                            </button>
+                        </div>
+
+                        <div class="p-5 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="bg-sky-50/80 border border-sky-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-sky-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-crosshairs text-sky-600"></i> 階段教學重點
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">建立「顏色＝電勢、同色＝等勢、色差＝電壓（電勢差）」的視覺化分析規則，區分串聯分壓（梯級轉色）與並聯等壓（跨接同色起終點）。</p>
+                                </div>
+                                <div class="bg-violet-50/80 border border-violet-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-violet-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bullseye text-violet-600"></i> 階段教學目標
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">無需繁瑣代數計算，學生能透過 LED 顏色分佈建構「同一導線同色（$\Delta V = 0\text{ V}$）」的心智模型，並憑起終點顏色相同直觀證明並聯支路電壓相等。</p>
+                                </div>
+                                <div class="bg-teal-50/80 border border-teal-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-teal-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-chart-simple text-teal-600"></i> 如何評估進度
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">即時核對工作紙任務一 Part A 的 POE 圈選填空結果，並巡視檢查學生在 Part B 白板／工作紙上對 $\text{LED } 4$（粉紅）、$\text{LED } 5$（黃）、$\text{LED } 6$（藍）的節點分色是否準確。</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-indigo-50/70 text-slate-800 border border-indigo-200 rounded-xl p-3.5 text-sm flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-start gap-3">
+                                    <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-xs font-bold shrink-0 mt-0.5">操作流程</span>
+                                    <p>投屏演示<strong>教具 ① 串聯（$3\text{–}7$ 分鐘）</strong>與<strong>教具 ② 並聯（$7\text{–}12$ 分鐘）</strong>，建立「顏色＝電勢、同色＝等勢、色差＝電壓」視覺規則，完成任務一 Part A 與 Part B。</p>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-xs">
+                                    <span class="led-pink px-2 py-0.5 rounded font-bold">$\text{LED } 1/4$</span>
+                                    <span class="led-yellow px-2 py-0.5 rounded font-bold">$\text{LED } 2/5$</span>
+                                    <span class="led-blue px-2 py-0.5 rounded font-bold">$\text{LED } 3/6$</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4">
+                                    <div class="flex items-center justify-between gap-2 mb-2">
+                                        <span class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                                            <i class="fa-solid fa-chalkboard-user text-amber-600"></i> 教師準備問的問題
+                                        </span>
+                                        <button onclick="openProjector('stage2')" class="no-print text-[11px] font-bold bg-amber-500 hover:bg-amber-600 text-white px-2.5 py-1 rounded-lg transition shadow-sm">
+                                            <i class="fa-solid fa-expand mr-1"></i>投屏放大
+                                        </button>
+                                    </div>
+                                    <div class="space-y-2.5 text-xs text-slate-800 leading-relaxed">
+                                        <div>
+                                            <span class="font-bold text-amber-900">【Part A：教具 ① 串聯，對應遊戲「南區」】</span>
+                                            <p class="mt-0.5">$1.$ 「亮燈後（<span class="font-bold text-pink-600">$\text{LED } 1$ 粉紅</span> $\rightarrow$ <span class="font-bold text-amber-600">$\text{LED } 2$ 黃</span> $\rightarrow$ <span class="font-bold text-blue-600">$\text{LED } 3$ 藍</span>），點解同一段導線由頭到尾完全同色，唔會漸變？如果我將伏特計並聯夾喺 $\text{LED } 1$ 頭尾兩點，度出嚟嘅電壓係幾多？」</p>
+                                        </div>
+                                        <div>
+                                            <span class="font-bold text-amber-900">【Part B：教具 ② 並聯，對應遊戲「東區」與「西區」】</span>
+                                            <p class="mt-0.5">$2.$ 「望住教具 ②，唔好計數！純粹睇顏色，$R_1$ 支路同 $(R_2 + R_3)$ 支路各自跨接邊兩隻色？點解呢幅顏色圖已經足夠證明 $V_{R1} = V_{R2} + V_{R3}$？」</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-comments text-slate-500"></i> 學生預期正確回應
+                                    </div>
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-900">
+                                        <span class="font-bold text-emerald-700 block mb-0.5">Part A 回應：</span>
+                                        「因為整段理想導線係等勢體（同色），只有跨過電阻先會轉色；伏特計夾喺同一條 $\text{LED } 1$ 兩端，色差為零，電壓讀數係 $0\text{ V}$！」
+                                    </div>
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-900">
+                                        <span class="font-bold text-emerald-700 block mb-0.5">Part B 回應：</span>
+                                        「$\text{LED } 4$ 粉紅、$\text{LED } 5$ 黃、$\text{LED } 6$ 藍。$R_1$ 同 $(R_2 + R_3)$ 兩端都係跨接 $\text{LED } 4$ 同 $\text{LED } 6$，起點同終點顏色一樣，所以兩端電壓必然相等！」
+                                    </div>
+                                </div>
+
+                                <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-indigo-800 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-hand-sparkles text-indigo-600"></i> 引導學生提問與預期問題
+                                    </div>
+                                    <div class="text-xs text-slate-700 leading-relaxed">
+                                        <span class="font-bold text-indigo-700">教師引導語：</span>「睇住 $R_2$ 同 $R_3$ 中間嗰段黃色 $\text{LED } 5$。結合返 Mock 卷常見嘅分壓題，大家可以針對『黃色嘅電勢高低』向我提出一個關於電阻比例同電壓分配嘅問題。」
+                                    </div>
+                                    <div class="bg-white border border-indigo-200 rounded-lg p-2.5 text-xs text-slate-800">
+                                        <span class="font-bold text-indigo-600 block mb-0.5"><i class="fa-solid fa-circle-question mr-1"></i>預期學生提問：</span>
+                                        「如果 $R_2$ 嘅電阻比 $R_3$ 大（好似一陣遊戲『南區』入面 $R_1 = 2\ \Omega$、$R_2 = 4\ \Omega$ 咁），中間條 $\text{LED } 5$ 嘅電勢會偏向粉紅色（高電勢）定偏向藍色（低電勢）？邊個電阻分到嘅電壓大啲？」
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stage 2 Mini-Summary -->
+                            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-600 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+                                <div class="space-y-1 flex-1 min-w-[260px]">
+                                    <div class="text-xs font-extrabold text-emerald-900 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bookmark text-emerald-600"></i> 【階段 $2$ 小總結｜視覺電壓判斷三法則】
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">
+                                        ① <strong>同一段理想導線必為同色（等勢，$\Delta V = 0\text{ V}$）</strong>，只有跨過電阻才會轉色；② <strong>串聯分壓</strong>呈階梯轉色（電阻愈大、分得電壓愈大）；③ <strong>並聯等壓</strong>是因為各支路起點與終點跨接相同顏色。
+                                    </p>
+                                </div>
+                                <button onclick="openProjector('stage2_sum')" class="no-print text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg transition shadow-sm shrink-0">
+                                    <i class="fa-solid fa-tv mr-1"></i>投屏小總結
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- STAGE 3 -->
+                    <article id="stage-card-3" class="stage-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 rounded-lg bg-indigo-100 text-indigo-900 border border-indigo-200 font-extrabold text-xs tracking-wide">階段 3｜$12\text{–}19$ 分鐘（$7$ 分鐘）</span>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">由色差到定量電壓——逐一剖析《電路四區圖鑑》情景（Explain）</h2>
+                            </div>
+                            <button onclick="jumpToStage(3, 12)" class="no-print text-xs text-indigo-600 hover:text-indigo-800 font-semibold bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200 transition">
+                                <i class="fa-solid fa-stopwatch mr-1"></i>設定計時器至此
+                            </button>
+                        </div>
+
+                        <div class="p-5 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="bg-sky-50/80 border border-sky-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-sky-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-crosshairs text-sky-600"></i> 階段教學重點
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">逐一拆解《電路四區圖鑑》的四個情景（南、東、北、西區），打通「節點顏色 $\rightarrow$ 兩端電壓 $\Delta V$ $\rightarrow$ 歐姆定律 $I = \Delta V / R$」的分析路徑。</p>
+                                </div>
+                                <div class="bg-violet-50/80 border border-violet-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-violet-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bullseye text-violet-600"></i> 階段教學目標
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">學生能分別在串聯分壓、並聯等壓、開關等勢及串並聯混聯四種情景下，準確判斷每個元件兩端的電壓 $\Delta V$，並無誤代入歐姆定律求解。</p>
+                                </div>
+                                <div class="bg-teal-50/80 border border-teal-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-teal-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-chart-simple text-teal-600"></i> 如何評估進度
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">檢視工作紙階段 $3$ 任務二對四個情景的節點電壓填寫紀錄，並透過口頭抽問確認學生能說出各區元件兩端的 $\Delta V$ 數值及對應歐姆定律算式。</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-indigo-50/70 text-slate-800 border border-indigo-200 rounded-xl p-3.5 text-sm space-y-2">
+                                <div class="flex items-start gap-3">
+                                    <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-xs font-bold shrink-0 mt-0.5">操作流程</span>
+                                    <p>投屏展示《電路四區圖鑑》（設電池負極為 $0\text{ V}$ 參考點，電源為 $12\text{ V}$：<span class="text-pink-600 font-bold">粉紅 $12\text{ V}$</span>、<span class="text-blue-600 font-bold">藍色 $0\text{ V}$</span>），逐一帶領學生剖析四個情景的電壓分佈與歐姆定律應用：</p>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pl-0 sm:pl-14">
+                                    <div class="bg-white/90 border border-rose-200 rounded-lg p-2.5">
+                                        <span class="font-bold text-rose-700">① 南區（純串聯分壓）：</span>$R_1 = 2\ \Omega$、$R_2 = 4\ \Omega$ 串聯，呈粉紅 $\rightarrow$ 黃 $\rightarrow$ 藍。總電流 $2\text{ A}$，$R_1$ 分走 $4\text{ V}$ 令黃色節點為 $8\text{ V}$，故 $\Delta V_{R2} = 8 - 0 = 8\text{ V}$。
+                                    </div>
+                                    <div class="bg-white/90 border border-amber-200 rounded-lg p-2.5">
+                                        <span class="font-bold text-amber-700">② 東區（並聯分流）：</span>各支路起點同為粉紅（$12\text{ V}$）、終點同為藍色（$0\text{ V}$），確定各支路電壓均為 $\Delta V = 12\text{ V}$，直接用 $I_i = 12 / R_i$ 求電流（$I_1 = 2\text{ A}$、$I_2 = 4\text{ A}$）。
+                                    </div>
+                                    <div class="bg-white/90 border border-indigo-200 rounded-lg p-2.5">
+                                        <span class="font-bold text-indigo-700">③ 北區（混聯與開關 $S_1$ 閉合）：</span>閉合 $S_1$ 將 $L_2$ 兩端連成同色（藍色 $0\text{ V}$），故 $\Delta V_{L2} = 0\text{ V}$（無電流），$12\text{ V}$ 集中於 $L_1 = 4\ \Omega$，幹線電流 $I = 12 / 4 = 3\text{ A}$。
+                                    </div>
+                                    <div class="bg-white/90 border border-emerald-200 rounded-lg p-2.5">
+                                        <span class="font-bold text-emerald-700">④ 西區（經典串並聯混聯）：</span>並聯區 $(X, Y)$ 跨接粉紅至黃色，幹路 $R_5$ 跨接黃色至藍色。先算 $V_{R5} = 3 \times 2 = 6\text{ V}$ 定出黃色電勢，相減得 $\Delta V_{XY} = 6\text{ V}$，再用歐姆定律求支流 $I_X = 6 / 4 = 1.5\text{ A}$。
+                                    </div>
+                                </div>
+                                <div class="bg-amber-50/90 border border-amber-300 rounded-lg p-2.5 text-xs ml-0 sm:ml-14">
+                                    <span class="font-bold text-amber-900"><i class="fa-solid fa-layer-group mr-1"></i>照顧學習差異｜短挑戰題 ①（沿用三色 LED 等勢法拆解跨接電路）：</span>工作紙階段 $3$ 沿用全課統一的「三色 LED（粉紅／黃／藍）」標示等勢線，引導學生為 $\text{X}—3\ \Omega—3\ \Omega—1.5\ \Omega—\text{Y}$ 跨接電路點擊填色（$\text{X}$ 連通導線為粉紅、$\text{Y}$ 連通導線為藍色，維持心智模型一致且避免多餘色階干擾），直觀發現三個電阻均跨接粉紅與藍，實為<strong>並聯</strong>（$R_{XY} = 0.75\ \Omega$，$I_{1.5\Omega} = 8\text{ A}$）。
+                                </div>
+                            </div>
+
+                            <!-- Stage 3 Mini-Summary -->
+                            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-600 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+                                <div class="space-y-1 flex-1 min-w-[260px]">
+                                    <div class="text-xs font-extrabold text-emerald-900 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bookmark text-emerald-600"></i> 【階段 $3$ 小總結｜歐姆定律「先定電壓、後求電流」兩步法】
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">
+                                        ① <strong>先定兩端電壓 $\Delta V$：</strong>從顏色分佈找出元件兩端的電勢（高電勢減低電勢；同色則 $\Delta V = 0\text{ V}$），切勿未看清結構就直接代電源總電壓；② <strong>再代歐姆定律：</strong>確定 $\Delta V$ 後，代入 $I = \Delta V / R$ 即能準確求出流經該元件的電流。
+                                    </p>
+                                </div>
+                                <button onclick="openProjector('stage3_sum')" class="no-print text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg transition shadow-sm shrink-0">
+                                    <i class="fa-solid fa-tv mr-1"></i>投屏小總結
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- STAGE 4 -->
+                    <article id="stage-card-4" class="stage-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 rounded-lg bg-indigo-100 text-indigo-900 border border-indigo-200 font-extrabold text-xs tracking-wide">階段 4｜$19\text{–}27$ 分鐘（$8$ 分鐘）</span>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">DSE 實戰破題——等勢分區拆解混聯電路電壓（Elaborate）</h2>
+                            </div>
+                            <button onclick="jumpToStage(4, 19)" class="no-print text-xs text-indigo-600 hover:text-indigo-800 font-semibold bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200 transition">
+                                <i class="fa-solid fa-stopwatch mr-1"></i>設定計時器至此
+                            </button>
+                        </div>
+
+                        <div class="p-5 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="bg-sky-50/80 border border-sky-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-sky-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-crosshairs text-sky-600"></i> 階段教學重點
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">將三色等勢法遷移至串並聯混聯電路，透過「粉紅 $\rightarrow$ 黃 $\rightarrow$ 藍」分區釐清串並聯層次，先求幹路分壓再推算並聯支路兩端電壓。</p>
+                                </div>
+                                <div class="bg-violet-50/80 border border-violet-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-violet-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bullseye text-violet-600"></i> 階段教學目標
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">學生能利用顏色分區有效分析混聯電路結構，準確計算幹路電阻與並聯區塊各自的電壓分配（$V_{R3}$ 與 $V_{PQ}$），進而應用歐姆定律求出支路電流。</p>
+                                </div>
+                                <div class="bg-teal-50/80 border border-teal-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-teal-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-chart-simple text-teal-600"></i> 如何評估進度
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">小組提交任務三的計算步驟（核對 $R_{PQ} = 2.0\ \Omega$、$V_{R3} = 7.2\text{ V}$、$V_{PQ} = 4.8\text{ V}$ 及 $I_{R2} = 1.2\text{ A}$），確認學生並非盲猜電壓而是按區推導。</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-indigo-50/70 text-slate-800 border border-indigo-200 rounded-xl p-3.5 text-sm flex items-start gap-3">
+                                <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-xs font-bold shrink-0 mt-0.5">操作流程</span>
+                                <p>開放至工作紙階段 $4$（任務三：$\text{PQ}$ 並聯區塊再串聯幹路 $R_3 = 3.0\ \Omega$，電源 $12\text{ V}$）。小組先用三色筆標出<span class="text-pink-600 font-bold">粉紅（正極區 $\text{P}$）</span>、<span class="text-amber-700 font-bold">黃色（中間節點 $\text{Q}$）</span>、<span class="text-blue-600 font-bold">藍色（負極區 $\text{R}$）</span>，逐步計算各區電壓與支路電流。</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4">
+                                    <div class="flex items-center justify-between gap-2 mb-2">
+                                        <span class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                                            <i class="fa-solid fa-chalkboard-user text-amber-600"></i> 教師準備問的問題
+                                        </span>
+                                        <button onclick="openProjector('stage4')" class="no-print text-[11px] font-bold bg-amber-500 hover:bg-amber-600 text-white px-2.5 py-1 rounded-lg transition shadow-sm">
+                                            <i class="fa-solid fa-expand mr-1"></i>投屏放大
+                                        </button>
+                                    </div>
+                                    <ol class="list-decimal list-inside space-y-2 text-xs text-slate-800 leading-relaxed">
+                                        <li><strong>【步驟一：先看顏色定結構】</strong>：「望住任務三嘅混聯圖，粉紅色到黃色之間包住邊兩個電阻？黃色到藍色之間又係邊個電阻？邊兩個電阻兩端電壓一定相等？」</li>
+                                        <li><strong>【步驟二：先算電壓再用歐姆定律】</strong>：「計出 $\text{PQ}$ 並聯等效電阻 $R_{PQ} = 2.0\ \Omega$ 同總電阻 $5.0\ \Omega$ 之後，總電流係 $2.4\text{ A}$。咁幹路 $R_3 = 3.0\ \Omega$ 食咗幾多伏特電壓？剩低畀 $\text{PQ}$ 並聯區嘅電壓又係幾多伏特？點樣用歐姆定律計出 $R_2$ 嘅電流？」</li>
+                                    </ol>
+                                </div>
+
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-comments text-slate-500"></i> 學生結構分析與計算回應
+                                    </div>
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-900">
+                                        <span class="font-bold text-emerald-700 block mb-0.5">結構判斷回應：</span>
+                                        「$R_1$ 同 $R_2$ 都係跨接粉紅同黃色，所以佢哋並聯且電壓相等；$R_3$ 跨接黃色同藍色，喺幹路串聯。」
+                                    </div>
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-900">
+                                        <span class="font-bold text-emerald-700 block mb-0.5">電壓與電流計算回應：</span>
+                                        「幹路 $R_3$ 食咗 $V_{R3} = 2.4 \times 3.0 = 7.2\text{ V}$，所以中間黃色節點係 $4.8\text{ V}$！$\text{PQ}$ 並聯區電壓就係 $4.8\text{ V}$，代入歐姆定律得 $I_{R2} = 4.8 / 4.0 = 1.2\text{ A}$！」
+                                    </div>
+                                </div>
+
+                                <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-indigo-800 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-hand-sparkles text-indigo-600"></i> 引導學生提問與預期問題
+                                    </div>
+                                    <div class="text-xs text-slate-700 leading-relaxed">
+                                        <span class="font-bold text-indigo-700">教師引導語：</span>「啱啱我哋係先算 $V_{R3}$ 再用 $12\text{ V}$ 減出 $V_{PQ}$。大家可唔可以從『並聯等效電阻 $R_{PQ} = 2.0\ \Omega$』直接用歐姆定律問一條驗證電壓嘅問題？」
+                                    </div>
+                                    <div class="bg-white border border-indigo-200 rounded-lg p-2.5 text-xs text-slate-800">
+                                        <span class="font-bold text-indigo-600 block mb-0.5"><i class="fa-solid fa-circle-question mr-1"></i>預期學生提問：</span>
+                                        「我係咪亦可以直接將總電流 $2.4\text{ A}$ 乘以並聯等效電阻 $R_{PQ} = 2.0\ \Omega$，一樣計到 $\text{PQ}$ 並聯區嘅電壓係 $2.4 \times 2.0 = 4.8\text{ V}$？」
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stage 4 Mini-Summary -->
+                            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-600 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+                                <div class="space-y-1 flex-1 min-w-[260px]">
+                                    <div class="text-xs font-extrabold text-emerald-900 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bookmark text-emerald-600"></i> 【階段 $4$ 小總結｜DSE 混聯電路電壓拆解「三步法」】
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">
+                                        ① <strong>先填色分區：</strong>跨接相同兩色者屬並聯（電壓相等），串聯區塊呈粉紅 $\rightarrow$ 黃 $\rightarrow$ 藍階梯；② <strong>求等效總阻與總電流：</strong>算出幹路電流 $I_{\text{總}}$；③ <strong>逐區定電壓再求支流：</strong>先算各區電壓 $\Delta V$，再代入 $I = \Delta V / R$ 求各支路電流。
+                                    </p>
+                                </div>
+                                <button onclick="openProjector('stage4_sum')" class="no-print text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg transition shadow-sm shrink-0">
+                                    <i class="fa-solid fa-tv mr-1"></i>投屏小總結
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- STAGE 5 -->
+                    <article id="stage-card-5" class="stage-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 rounded-lg bg-indigo-100 text-indigo-900 border border-indigo-200 font-extrabold text-xs tracking-wide">階段 5｜$27\text{–}35$ 分鐘（$8$ 分鐘）</span>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">終極闖關評估——《電路四區圖鑑》小遊戲與反思（Evaluate）</h2>
+                            </div>
+                            <div class="flex items-center gap-2 no-print">
+                                <button onclick="openQrModal()" class="text-xs text-amber-800 hover:text-amber-950 font-bold bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-300 transition">
+                                    <i class="fa-solid fa-qrcode mr-1"></i>投影 QR Code
+                                </button>
+                                <button onclick="jumpToStage(5, 27)" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200 transition">
+                                    <i class="fa-solid fa-stopwatch mr-1"></i>設定計時器至此
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-5 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="bg-sky-50/80 border border-sky-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-sky-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-crosshairs text-sky-600"></i> 階段教學重點
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">將等勢分色與電壓判斷策略獨立應用於《電路四區圖鑑》中的串聯分壓（南區）、並聯等壓（東區）、開關等勢短路（北區）與混聯拆解（西區）四個考題原型。</p>
+                                </div>
+                                <div class="bg-violet-50/80 border border-violet-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-violet-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bullseye text-violet-600"></i> 階段教學目標
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">學生能於 $6$ 分鐘內獨立運用「先定電壓、再用歐姆定律」通關四區考題原型，並透過「一句話反思」總結個人破解電路電壓判斷盲點的方法。</p>
+                                </div>
+                                <div class="bg-teal-50/80 border border-teal-200 rounded-xl p-3.5">
+                                    <div class="text-xs font-bold text-teal-800 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-chart-simple text-teal-600"></i> 如何評估進度
+                                    </div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">雙軌數據檢核：$(1)$ 即時觀察網頁遊戲四區通關進度與卡關分佈（重點留意北區開關等勢與西區混聯電壓分配）；$(2)$ 審閱工作紙任務四第 $1$ 題是非判斷及「一句話反思」填寫內容。</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-indigo-50/70 text-slate-800 border border-indigo-200 rounded-xl p-3.5 text-sm space-y-1.5">
+                                <div class="flex items-start gap-3">
+                                    <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-xs font-bold shrink-0 mt-0.5">操作流程</span>
+                                    <ol class="list-decimal list-inside space-y-1 text-xs sm:text-sm">
+                                        <li><strong>$27\text{–}33$ 分鐘（$6$ 分鐘）：</strong>完成任務四第 $1$ 題是非判斷後，立即掃碼開啟評估遊戲 <a href="https://v5kh2ndvkk-web.github.io/circuit/" target="_blank" class="text-indigo-700 font-bold underline hover:text-indigo-900 font-mono">v5kh2ndvkk-web.github.io/circuit/</a>，限時挑戰南區（串聯）、東區（並聯）、北區（開關等勢）及西區（混聯）四個關卡。</li>
+                                        <li><strong>$33\text{–}35$ 分鐘（$2$ 分鐘）：</strong>回到工作紙填寫任務四「一句話反思」並可匯出個人作答版 A4 PDF。</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4">
+                                    <div class="flex items-center justify-between gap-2 mb-2">
+                                        <span class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                                            <i class="fa-solid fa-chalkboard-user text-amber-600"></i> 教師指令與反思提問
+                                        </span>
+                                        <button onclick="openProjector('stage5')" class="no-print text-[11px] font-bold bg-amber-500 hover:bg-amber-600 text-white px-2.5 py-1 rounded-lg transition shadow-sm">
+                                            <i class="fa-solid fa-expand mr-1"></i>投屏放大
+                                        </button>
+                                    </div>
+                                    <ol class="list-decimal list-inside space-y-2 text-xs text-slate-800 leading-relaxed">
+                                        <li>「打開《電路四區》小遊戲，限時 $6$ 分鐘挑戰『南區串聯、東區並聯、北區開關等勢及西區串並聯混聯』四個關卡！遇阻時可以撳開右上角《常見考試電路圖鑑》，先用等勢分色法判斷各元件兩端電壓，再用歐姆定律計算。」</li>
+                                        <li>「過關之後，喺工作紙任務四最後一欄寫低：今日學識邊一個判斷電壓嘅步驟，最幫你破解到之前 Mock 嘅盲點？」</li>
+                                    </ol>
+                                </div>
+
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-comments text-slate-500"></i> 遊戲通關與反思回應
+                                    </div>
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-900">
+                                        <span class="font-bold text-emerald-700 block mb-0.5">東區與北區反思：</span>
+                                        「東區兩條支路起終點都係粉紅同藍色，即刻知道兩邊都食晒 $12\text{ V}$；北區閉合開關 $S_1$ 將 $L_2$ 兩端變同色等勢，即刻知道 $\Delta V_{L2} = 0\text{ V}$！」
+                                    </div>
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-xs text-emerald-900">
+                                        <span class="font-bold text-emerald-700 block mb-0.5">西區混聯反思：</span>
+                                        「西區先計並聯 $X, Y$ 等效電阻同幹路 $R_5$ 分走幾多電壓，再用總電壓減出 $X, Y$ 兩端電壓，用顏色分區之後終於識用歐姆定律拆解混聯題！」
+                                    </div>
+                                </div>
+
+                                <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-4 space-y-2.5">
+                                    <div class="text-xs font-bold text-indigo-800 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-arrow-right-to-bracket text-indigo-600"></i> 結課與下節銜接（多開關動態切換與電池內電阻進階）
+                                    </div>
+                                    <div class="text-xs text-slate-700 leading-relaxed">
+                                        <span class="font-bold text-indigo-700">教師引導語：</span>「今日大家成功掌握點樣判斷串聯、並聯、北區單一開關短路同混聯電路唔同位置嘅電壓。承接『北區』開關 $S_1$ 嘅等勢原理，如果考題同時加入多個開關動態切換，或者電池本身有內電阻（$r$），大家可以預先提出一個關於節點電勢變化嘅進階問題？」
+                                    </div>
+                                    <div class="bg-white border border-indigo-200 rounded-lg p-2.5 text-xs text-slate-800">
+                                        <span class="font-bold text-indigo-600 block mb-0.5"><i class="fa-solid fa-circle-question mr-1"></i>預期學生提問：</span>
+                                        「如果電路入面同時有幾個開關輪流斷開同閉合，或者電池有內電阻（$r$）同埋接入非理想電錶，各個節點嘅顏色同元件兩端電壓又會點樣動態改變？」<span class="text-slate-500">（自然銜接下節課）</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Final Lesson Summary Block (Light Theme) -->
+                            <div class="bg-amber-50/60 text-slate-900 rounded-2xl p-5 border-2 border-amber-300 space-y-4">
+                                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-3">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-extrabold text-xs">$33\text{–}35$ 分鐘｜課堂總結（Final Summary）</span>
+                                        <h3 class="text-sm sm:text-base font-bold text-slate-900">全課概念收束、變式檢測與下節預告</h3>
+                                    </div>
+                                    <button onclick="openProjector('final_sum')" class="no-print text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg transition shadow-sm">
+                                        <i class="fa-solid fa-tv mr-1"></i>投屏課堂總結
+                                    </button>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                    <div class="bg-white border border-amber-200 rounded-xl p-3.5 space-y-1.5 shadow-sm">
+                                        <div class="font-bold text-amber-800">$1.$ 總結核心原理（教師引導）</div>
+                                        <p class="text-slate-700 leading-relaxed">
+                                            帶領全班重溫<strong>「顏色＝電勢、同色＝等勢、色差＝電壓」</strong>，強調面對任何電路題必須先確定元件兩端電壓 $\Delta V$，再代入歐姆定律 $I = \Delta V / R$。
+                                        </p>
+                                    </div>
+                                    <div class="bg-white border border-sky-200 rounded-xl p-3.5 space-y-1.5 shadow-sm">
+                                        <div class="font-bold text-sky-800">$2.$ 總結快速概念檢測題（Exit Check）</div>
+                                        <p class="text-slate-700 leading-relaxed">
+                                            快速提問：「在 $12\text{ V}$ 串聯電路中，若 $R_1$ 電壓為 $4\text{ V}$，$R_2$ 電壓是多少？若將 $R_2$ 換成更大電阻，它分得的電壓會變大還是變小？」<span class="text-emerald-700 font-semibold block mt-1">（預期答：$8\text{ V}$；變大，因 $V = IR$。）</span>
+                                        </p>
+                                    </div>
+                                    <div class="bg-white border border-pink-200 rounded-xl p-3.5 space-y-1.5 shadow-sm">
+                                        <div class="font-bold text-pink-800">$3.$ 反思提交與下堂課預告</div>
+                                        <p class="text-slate-700 leading-relaxed">
+                                            學生於工作紙任務四完成「一句話反思」；教師預告下堂課將進階探討<strong>「多開關斷開與閉合的動態切換」及「電池內電阻（$r$）與非理想電錶」</strong>對節點電勢的影響。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- TAB 3: Constructivist Prior Knowledge & Learning Objectives -->
+                <div id="tab-panel-constructivism" class="tab-panel hidden space-y-6">
+                    <!-- Part 1: Students' Prior Knowledge & Preconceptions -->
+                    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
+                        <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-200 pb-3">
+                            <span class="px-3 py-1 rounded-lg text-xs font-extrabold bg-rose-100 text-rose-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-brain"></i> 一、學生已有知識與學習鷹架分析（建構主義視角）
+                            </span>
+                            <span class="text-xs font-semibold text-slate-500">授課年級：中六 ｜ 學生人數：$17$ 人（基礎較弱、數理能力有限）</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            建構主義強調新知識必須建基於學習者既有的認知結構之上。本班中六學生雖然數理基礎較弱，但在中五已具備以下四項具體先備知識；本課設計正是以這四項知識為起點，搭建「三色 LED 等勢地圖」視覺鷹架，幫助學生克服模擬試（Mock）中「無法判斷電路各處電壓」的難點：
+                        </p>
+
+                        <!-- 4 Concrete Prior Knowledge Cards & How They Scaffold Learning -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-900 flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded bg-indigo-600 text-white flex items-center justify-center text-xs font-black">$1$</span>
+                                    基本電路符號與閉合迴路概念
+                                </div>
+                                <p class="text-slate-700 leading-relaxed text-xs">
+                                    <strong>已掌握知識點：</strong>能辨識電池（電源）、導線及定值電阻的標準電路符號，並理解電荷必須在閉合迴路（Closed Loop）中才能持續流動。
+                                </p>
+                                <div class="p-2.5 rounded-lg bg-indigo-50/80 border border-indigo-100 text-indigo-900 text-xs leading-relaxed">
+                                    <strong>如何幫助掌握課堂內容：</strong>作為閱讀電路圖的起點，讓學生能迅速鎖定電源正負極（高電勢起點與低電勢終點）及電流路徑，為後續用三色 LED 標定節點電勢建立空間框架。
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-900 flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded bg-indigo-600 text-white flex items-center justify-center text-xs font-black">$2$</span>
+                                    電流、電壓（電勢差）與電阻的基本意義
+                                </div>
+                                <p class="text-slate-700 leading-relaxed text-xs">
+                                    <strong>已掌握知識點：</strong>於中五已學習電源（電池）為電荷提供電勢能、電壓（電勢差）是推動電荷流動的能量差，電阻會阻礙電流流動，並掌握基本單位（$\text{A}$、$\text{V}$、$\Omega$）。
+                                </p>
+                                <div class="p-2.5 rounded-lg bg-indigo-50/80 border border-indigo-100 text-indigo-900 text-xs leading-relaxed">
+                                    <strong>如何幫助掌握課堂內容：</strong>教師先以生活熟悉的「大富翁起點『GO』派資金、行空地資金不變、踩中物業才交租」類比電勢變化，建立「相連無阻導線即等勢（$\Delta V = 0\text{ V}$）」的判準，再將各段電勢具象化為「三色 LED 顏色」，讓學生順理成章理解「同色導線等勢（$\Delta V = 0$）」及「跨阻轉色（產生電壓降）」。
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-900 flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded bg-indigo-600 text-white flex items-center justify-center text-xs font-black">$3$</span>
+                                    歐姆定律公式（$V = IR$）與基本串／並聯規則
+                                </div>
+                                <p class="text-slate-700 leading-relaxed text-xs">
+                                    <strong>已掌握知識點：</strong>記住歐姆定律公式 $V = IR$，並對「串聯電流處處相等」及「並聯總電流等於各支路電流之和」有初步認識。
+                                </p>
+                                <div class="p-2.5 rounded-lg bg-indigo-50/80 border border-indigo-100 text-indigo-900 text-xs leading-relaxed">
+                                    <strong>如何幫助掌握課堂內容：</strong>學生無需重新背誦新公式，課堂只需聚焦補齊「如何從電路圖判斷個別元件兩端真實電壓 $\Delta V$」這一關鍵拼圖，即可直接激活他們已有的 $V = IR$ 公式知識，轉化為有效的解題能力。
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-900 flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded bg-indigo-600 text-white flex items-center justify-center text-xs font-black">$4$</span>
+                                    日常顏色對比與階梯次序的直覺認知
+                                </div>
+                                <p class="text-slate-700 leading-relaxed text-xs">
+                                    <strong>已掌握知識點：</strong>具備直觀分辨顏色異同與色彩階梯變化（由暖色過渡至冷色）的生活視覺經驗。
+                                </p>
+                                <div class="p-2.5 rounded-lg bg-indigo-50/80 border border-indigo-100 text-indigo-900 text-xs leading-relaxed">
+                                    <strong>如何幫助掌握課堂內容：</strong>作為建構主義「最近發展區（ZPD）」的具體化橋樑，讓數理基礎較弱的學生繞過繁瑣代數，先憑顏色相同或差異直觀判斷「等壓」與「分壓」，建立成功感後再過渡至定量計算。
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Diagnostic Bridging Box -->
+                        <div class="p-4 rounded-xl bg-amber-50/80 border border-amber-200 text-xs space-y-1.5">
+                            <div class="font-bold text-amber-900 flex items-center gap-1.5">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 模擬試（Mock）暴露的知識斷層與待重構前概念
+                            </div>
+                            <p class="text-slate-700 leading-relaxed">
+                                儘管學生掌握上述基礎概念，但在面對多支路或混聯電路時，仍出現「誤以為電流經過電阻會變細」、「單憑導線幾何外觀猜測並聯」及「誤將電源總電壓 $12\text{ V}$ 直接當作個別電阻的電壓」等迷思，導致無法判斷電路各處電壓，進而未能有效運用歐姆定律解題。
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Part 2: Lesson Learning Objectives -->
+                    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-200 pb-3">
+                            <span class="px-3 py-1 rounded-lg text-xs font-extrabold bg-indigo-100 text-indigo-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-bullseye"></i> 二、課堂總體教學目標（概念轉變與分層目標）
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            <div class="p-4 rounded-xl bg-pink-50/50 border border-pink-200 border-l-4 border-l-pink-500 space-y-1.5">
+                                <div class="font-bold text-slate-900 text-sm">$1.$ 建立電勢視覺模型與基礎喚醒</div>
+                                <p class="text-slate-600 leading-relaxed">
+                                    透過 POE（預測—觀察—解釋）破除「電流消耗論」；能以<strong>「理想導線零電阻 $\Rightarrow$ 同色等勢（$\Delta V = 0$）」</strong>重新建構串聯分壓與並聯等壓的電壓分佈規律。
+                                </p>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-amber-50/50 border border-amber-200 border-l-4 border-l-amber-500 space-y-1.5">
+                                <div class="font-bold text-slate-900 text-sm">$2.$ 掌握電壓判斷與歐姆定律應用</div>
+                                <p class="text-slate-600 leading-relaxed">
+                                    學會「先定電勢顏色 $\rightarrow$ 再判元件兩端電壓 $\Delta V$ $\rightarrow$ 最後代入 $I = \Delta V / R$」的分析流程，能準確計算串聯、並聯及混聯電路各部分的電壓與電流。
+                                </p>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-blue-50/50 border border-blue-200 border-l-4 border-l-blue-500 space-y-1.5">
+                                <div class="font-bold text-slate-900 text-sm">$3.$ 考題原型遷移與元認知反思</div>
+                                <p class="text-slate-600 leading-relaxed">
+                                    能將 LED 等勢分色法遷移至《電路四區圖鑑》小遊戲的 DSE 標準題型，並能用一句話總結如何有效判斷電路電壓以破解個人在 Mock 的盲點。
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TAB 4: Alignment Architecture & Objectives -->
+                <div id="tab-panel-matrix" class="tab-panel hidden space-y-6">
+                    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-indigo-50 text-indigo-950 px-6 py-4 border-b border-indigo-200">
+                            <h2 class="text-base sm:text-lg font-bold">教學工具對接與 $35$ 分鐘針對性課堂調整</h2>
+                            <p class="text-xs text-slate-600 mt-0.5">聚焦「串／並聯電勢分佈與電壓判斷」，精準對接《電路學生工作紙》與《電路四區圖鑑》網頁遊戲</p>
+                        </div>
+
+                        <div class="p-6 overflow-x-auto">
+                            <table class="w-full border-collapse border border-slate-300 text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-800 text-left">
+                                        <th class="border border-slate-300 px-4 py-3 w-1/4">《電路學生工作紙》（<span class="font-mono">circuit_ws</span>）模塊</th>
+                                        <th class="border border-slate-300 px-4 py-3 w-1/3">內置互動功能與評估遊戲（<span class="font-mono">circuit</span>）對接</th>
+                                        <th class="border border-slate-300 px-4 py-3">本節（$35$ 分鐘聚焦電壓分析版）教學重點</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    <tr>
+                                        <td class="border border-slate-300 px-4 py-3 font-bold text-slate-900">階段 $1$｜熱身前測（$0\text{–}3\text{m}$）<br><span class="text-xs font-normal text-slate-600">大富翁電路類比＋前測第 $1$、$2$ 題</span></td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            設電池負極為 $0\text{ V}$ 參考點，點擊「演示等勢色區」切換粉紅（$12\text{ V}$）／藍色（$0\text{ V}$）棋盤導線，線上圈選及填空，即時診斷前概念。
+                                        </td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            建立「設電池負極為 $0\text{ V}$ 參考點」、「電池提供電勢能」、「相連無阻導線等勢（$\Delta V = 0\text{ V}$）」及「回到負極降至 $0\text{ V}$」核心基石。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 px-4 py-3 font-bold text-slate-900">階段 $2$｜任務一（$3\text{–}12\text{m}$）<br><span class="text-xs font-normal text-slate-600">Part A 串聯 POE ＋ Part B 並聯節點</span></td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            點擊教具 ①、② 互動 LED 光條循環變色，線上完成紅筆圈選與預測／實測表格。
+                                        </td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            建構「同色等勢、跨阻轉色、色差即電壓」視覺規則，憑起終點同色（$\text{LED } 4$ 與 $\text{LED } 6$）證明並聯等壓。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 px-4 py-3 font-bold text-slate-900">階段 $3$｜任務二（$12\text{–}19\text{m}$）<br><span class="text-xs font-normal text-slate-600">《電路四區圖鑑》＋短挑戰題 ①</span></td>
+                                        <td class="border border-slate-300 px-4 py-3">
+                                            <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-xs mr-1">① 南</span>
+                                            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-xs mr-1">② 東</span>
+                                            <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-xs mr-1">③ 北</span>
+                                            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs">④ 西</span>
+                                            四區情景互動圖＋統一三色 LED 跨接電路
+                                        </td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            強化「先定 $\Delta V$ 再用 $I = \Delta V / R$」；透過短挑戰題 ①（沿用三色 LED 粉紅／黃／藍標示等勢線，避免多餘色階干擾）照顧學習差異，視覺化拆解跨接並聯電路（$R_{XY} = 0.75\ \Omega$）。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 px-4 py-3 font-bold text-slate-900">階段 $4$｜任務三（$19\text{–}27\text{m}$）<br><span class="text-xs font-normal text-slate-600">$\text{PQ}$ 並聯再串聯 $R_3$ 混聯電路</span></td>
+                                        <td class="border border-slate-300 px-4 py-3">
+                                            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs mr-1">④ 西區</span>
+                                            經典串並聯混聯（三色分區 $\text{P}$、$\text{Q}$、$\text{R}$ 三步法）
+                                        </td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            集中訓練混聯電路填色分區（粉紅 $\rightarrow$ 黃 $\rightarrow$ 藍），先求幹路 $V_{R3} = 7.2\text{ V}$ 再推算 $\Delta V_{PQ} = 4.8\text{ V}$ 與支流 $I_{R2} = 1.2\text{ A}$。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-300 px-4 py-3 font-bold text-slate-900">階段 $5$｜任務四（$27\text{–}35\text{m}$）<br><span class="text-xs font-normal text-slate-600">Exit Ticket 是非題＋遊戲勾選＋反思</span></td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            連接 <span class="font-mono text-indigo-700">circuit</span> 網頁遊戲限時 $6$ 分鐘闖關（南、東、北、西四區）；教師可用密碼 <code class="font-mono font-bold">$1124$</code> 解鎖答案與匯出 A4 PDF。
+                                        </td>
+                                        <td class="border border-slate-300 px-4 py-3 text-slate-700">
+                                            檢核獨立應用能力，並透過「一句話反思」句式收束個人破解 Mock 電路盲點的方法。
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TAB 5: Circuit Game Atlas & Dual-Track Evaluation -->
+                <div id="tab-panel-game" class="tab-panel hidden space-y-6">
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                        <div class="xl:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+                            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-200 pb-3">
+                                <div>
+                                    <h2 class="text-base sm:text-lg font-bold text-slate-900">《常見考試電路圖鑑》四區情景解析（電壓判斷策略）</h2>
+                                    <p class="text-xs text-slate-500 mt-0.5">學生於第 $27\text{–}33$ 分鐘限時 $6$ 分鐘挑戰的 HKDSE 四大經典電路情景</p>
+                                </div>
+                                <a href="https://v5kh2ndvkk-web.github.io/circuit/" target="_blank" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> 開啟小遊戲頁面
+                                </a>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                <div class="p-4 rounded-xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-extrabold text-rose-800 text-sm">① 南區：純串聯分壓電路</span>
+                                        <span class="px-2 py-0.5 rounded bg-rose-200 text-rose-900 font-bold text-[11px]">情景一</span>
+                                    </div>
+                                    <p class="text-slate-700 leading-relaxed">
+                                        <strong>考點結構：</strong>$R_1 = 2\ \Omega$ 與 $R_2 = 4\ \Omega$ 串聯接 $12\text{ V}$ 電池。<br>
+                                        <strong>電壓與歐姆定律：</strong>LED 呈粉紅 $\rightarrow$ 黃 $\rightarrow$ 藍梯級轉色，電流處處相等（$I = 2\text{ A}$），$R_2$ 電阻較大故分得較大電壓（$\Delta V_{R2} = 8\text{ V}$）。
+                                    </p>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-extrabold text-amber-800 text-sm">② 東區：並聯分流電路</span>
+                                        <span class="px-2 py-0.5 rounded bg-amber-200 text-amber-900 font-bold text-[11px]">情景二</span>
+                                    </div>
+                                    <p class="text-slate-700 leading-relaxed">
+                                        <strong>考點結構：</strong>兩條並聯支路（$R_1 = 6\ \Omega$、$R_2 = 3\ \Omega$）直接跨接 $12\text{ V}$ 電池正負極。<br>
+                                        <strong>電壓與歐姆定律：</strong>各支路起點同為粉紅、終點同為藍色，確定兩端電壓均為 $\Delta V = 12\text{ V}$，直接代入 $I_i = 12 / R_i$ 求各支路電流（$I_1 = 2\text{ A}$、$I_2 = 4\text{ A}$）。
+                                    </p>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-extrabold text-indigo-800 text-sm">③ 北區：混聯與開關 $S_1$ 閉合</span>
+                                        <span class="px-2 py-0.5 rounded bg-indigo-200 text-indigo-900 font-bold text-[11px]">情景三</span>
+                                    </div>
+                                    <p class="text-slate-700 leading-relaxed">
+                                        <strong>考點結構：</strong>開關 $S_1$ 並聯接於燈泡 $L_2$ 兩端。<br>
+                                        <strong>電壓與歐姆定律：</strong>$S_1$ 閉合後將 $L_2$ 兩端連成等勢區（同色），使 $\Delta V_{L2} = 0\text{ V}$（無電流通過 $L_2$），全部 $12\text{ V}$ 電壓集中於 $L_1$（$I = 12 / 4 = 3\text{ A}$）。
+                                    </p>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-extrabold text-emerald-800 text-sm">④ 西區：經典串並聯混聯</span>
+                                        <span class="px-2 py-0.5 rounded bg-emerald-200 text-emerald-900 font-bold text-[11px]">情景四</span>
+                                    </div>
+                                    <p class="text-slate-700 leading-relaxed">
+                                        <strong>考點結構：</strong>$X, Y$ 並聯區塊再與幹路電阻 $R_5$ 串聯。<br>
+                                        <strong>電壓與歐姆定律：</strong>先求 $R_{XY} = 2\ \Omega$ 與幹路總電流 $I = 3\text{ A}$，算出 $R_5$ 分去的電壓（$V_{R5} = 6\text{ V}$）後，相減得出並聯區兩端電壓 $\Delta V_{XY} = 6\text{ V}$，再用歐姆定律求各支路電流（$I_X = 1.5\text{ A}$）。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="xl:col-span-4 space-y-5">
+                            <!-- Card 1: Worksheet URL & QR -->
+                            <div class="bg-white rounded-2xl shadow-sm border border-indigo-200 p-5 text-center space-y-2.5">
+                                <div class="text-xs font-extrabold text-indigo-700 uppercase tracking-wider">第 $00$ 分鐘派發｜線上互動工作紙</div>
+                                <div id="inline-ws-qrcode" class="flex justify-center p-2.5 bg-white rounded-xl border border-slate-200 w-fit mx-auto"></div>
+                                <div class="flex items-center gap-1.5">
+                                    <input id="ws-url-input" type="text" readonly value="https://v5kh2ndvkk-web.github.io/circuit_ws/" class="w-full text-[11px] font-mono bg-slate-100 border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-700">
+                                    <button onclick="copyUrlById('ws-url-input', '已複製《電路學生工作紙》網址！')" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shrink-0 transition">
+                                        複製
+                                    </button>
+                                </div>
+                                <p class="text-[11px] text-slate-500">教師密碼：<code class="font-bold text-slate-800">$1124$</code>（解鎖參考答案／匯出 PDF）</p>
+                            </div>
+
+                            <!-- Card 2: Game URL & QR -->
+                            <div class="bg-white rounded-2xl shadow-sm border border-amber-200 p-5 text-center space-y-2.5">
+                                <div class="text-xs font-extrabold text-amber-800 uppercase tracking-wider">第 $27$ 分鐘派發｜《電路四區》小遊戲</div>
+                                <div id="inline-qrcode" class="flex justify-center p-2.5 bg-white rounded-xl border border-slate-200 w-fit mx-auto"></div>
+                                <div class="flex items-center gap-1.5">
+                                    <input id="game-url-input" type="text" readonly value="https://v5kh2ndvkk-web.github.io/circuit/" class="w-full text-[11px] font-mono bg-slate-100 border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-700">
+                                    <button onclick="copyUrlById('game-url-input', '已複製《電路四區圖鑑》遊戲網址！')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shrink-0 transition">
+                                        複製
+                                    </button>
+                                </div>
+                                <button onclick="openQrModal()" class="w-full py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-xs transition shadow-sm">
+                                    <i class="fa-solid fa-expand mr-1"></i> 全屏雙平台 QR Code 投屏
+                                </button>
+                            </div>
+
+                            <!-- Dual-Track Evaluation Checklist (Light Theme) -->
+                            <div class="bg-indigo-50/70 text-slate-900 rounded-2xl p-5 border border-indigo-200 space-y-3">
+                                <div class="text-xs font-extrabold text-indigo-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-clipboard-check text-indigo-600"></i> 課後雙軌評估與跟進提示
+                                </div>
+                                <ul class="space-y-2 text-xs text-slate-700 leading-relaxed">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-indigo-700 font-bold">$1.$</span>
+                                        <span><strong>工作紙數據檢核：</strong>檢視中六 $17$ 位學生在任務一、二、三對節點電壓的判斷準確度、短挑戰題 ① 並聯識別，以及任務四「一句話反思」。</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-indigo-700 font-bold">$2.$</span>
+                                        <span><strong>遊戲闖關數據：</strong>根據任務四通關勾選與現場觀察，鎖定未能通關「西區串並聯混聯」之學生，課後針對「分區計算電壓」進行小班鞏固。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification Banner (Light Theme) -->
+    <div id="toast-banner" class="fixed bottom-5 right-5 z-50 bg-white text-slate-900 px-4 py-3 rounded-xl shadow-xl border border-slate-200 flex items-center gap-2.5 text-xs font-bold transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+        <span id="toast-message">操作成功</span>
+    </div>
+
+    <!-- Projector Modal (Light Header) -->
+    <div id="projector-modal" class="fixed inset-0 z-50 bg-slate-900/45 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="bg-indigo-50 text-indigo-950 px-6 py-4 border-b border-indigo-200 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-tv"></i>
+                    </span>
+                    <h3 id="projector-title" class="text-base sm:text-lg font-extrabold">課堂投屏討論題</h3>
+                </div>
+                <button onclick="closeModal('projector-modal')" class="w-9 h-9 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 hover:text-slate-900 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 sm:p-8 space-y-6">
+                <div id="projector-question" class="text-lg sm:text-2xl font-bold text-slate-900 leading-relaxed whitespace-pre-line"></div>
+                <div id="projector-hint" class="hidden p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300 text-emerald-950 text-base sm:text-lg font-semibold leading-relaxed whitespace-pre-line"></div>
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200">
+                    <div class="flex items-center gap-2 text-xs font-bold">
+                        <span class="led-pink px-2.5 py-1 rounded-lg">粉紅＝高電勢</span>
+                        <span class="led-yellow px-2.5 py-1 rounded-lg">黃色＝中電勢</span>
+                        <span class="led-blue px-2.5 py-1 rounded-lg">藍色＝低電勢</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleProjectorHint()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition shadow-sm">
+                            <i class="fa-solid fa-eye mr-1.5"></i>顯示／隱藏核心結論
+                        </button>
+                        <button onclick="closeModal('projector-modal')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm transition">
+                            關閉投屏
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full-Screen Dual QR Code Modal (Light Theme) -->
+    <div id="qr-modal" class="fixed inset-0 z-50 bg-slate-900/45 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden text-center">
+            <div class="bg-indigo-50 text-indigo-950 px-6 py-4 border-b border-indigo-200 flex items-center justify-between">
+                <span class="font-extrabold text-sm sm:text-base flex items-center gap-2">
+                    <i class="fa-solid fa-qrcode text-amber-600"></i> 課堂雙平台掃碼進入（工作紙 ＋ 闖關遊戲）
+                </span>
+                <button onclick="closeModal('qr-modal')" class="w-8 h-8 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <!-- Left: Interactive Student Worksheet -->
+                    <div class="p-4 rounded-2xl bg-indigo-50/60 border-2 border-indigo-200 space-y-3">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-indigo-600 text-white text-xs font-bold">① $0\text{–}35$ 分鐘全程使用</span>
+                        <div class="text-sm font-extrabold text-slate-900">《電路學生工作紙》（互動版）</div>
+                        <div id="modal-ws-qrcode" class="flex justify-center p-3 bg-white rounded-2xl border border-indigo-200 w-fit mx-auto shadow-inner"></div>
+                        <div class="text-[11px] font-mono text-indigo-700 break-all bg-white px-2.5 py-1.5 rounded-lg border border-indigo-100">
+                            https://v5kh2ndvkk-web.github.io/circuit_ws/
+                        </div>
+                    </div>
+
+                    <!-- Right: Four-Zone Assessment Game -->
+                    <div class="p-4 rounded-2xl bg-amber-50/60 border-2 border-amber-200 space-y-3">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-xs font-bold">② $27\text{–}33$ 分鐘限時闖關</span>
+                        <div class="text-sm font-extrabold text-slate-900">《電路四區圖鑑》評估小遊戲</div>
+                        <div id="modal-qrcode" class="flex justify-center p-3 bg-white rounded-2xl border border-amber-200 w-fit mx-auto shadow-inner"></div>
+                        <div class="text-[11px] font-mono text-amber-900 break-all bg-white px-2.5 py-1.5 rounded-lg border border-amber-100">
+                            https://v5kh2ndvkk-web.github.io/circuit/
+                        </div>
+                    </div>
+                </div>
+                <button onclick="closeModal('qr-modal')" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm transition">
+                    返回教案畫面
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Random Student Picker Modal (Light Theme, S6 / 17 Students) -->
+    <div id="picker-modal" class="fixed inset-0 z-50 bg-slate-900/45 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="bg-indigo-50 text-indigo-950 px-6 py-4 border-b border-indigo-200 flex items-center justify-between">
+                <span class="font-extrabold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-shuffle text-sky-600"></i> 中六課堂隨機抽籤器（$17$ 人）
+                </span>
+                <button onclick="closeModal('picker-modal')" class="w-8 h-8 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">授課年級</label>
+                        <input id="picker-class" type="text" readonly value="中六" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold text-slate-800 bg-slate-100">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">學生人數</label>
+                        <input id="picker-max" type="number" min="1" max="50" value="17" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold text-slate-800 bg-slate-50">
+                    </div>
+                </div>
+
+                <div class="bg-sky-50 border-2 border-sky-200 text-slate-900 rounded-2xl p-6 text-center space-y-1">
+                    <div id="picker-result-class" class="text-xs text-sky-700 font-bold">準備抽籤（$1\text{–}17$ 號）</div>
+                    <div id="picker-result-number" class="text-4xl font-black tracking-wider text-indigo-700">--</div>
+                </div>
+
+                <button id="btn-pick-roll" onclick="pickRandomStudent()" class="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-sm transition shadow-sm">
+                    <i class="fa-solid fa-dice mr-1.5"></i> 立即抽取一位同學回答
+                </button>
+
+                <div>
+                    <div class="flex items-center justify-between text-[11px] text-slate-500 mb-1">
+                        <span>本節已抽學號（避免重複）：</span>
+                        <button onclick="clearPickedHistory()" class="text-rose-600 hover:underline">清除紀錄</button>
+                    </div>
+                    <div id="picker-history" class="min-h-[28px] p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs font-mono text-slate-600 flex flex-wrap gap-1.5">
+                        <span class="text-slate-400">尚未抽取</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. KaTeX Math Rendering Initialization
+        // ==========================================
+        function renderAllMath(targetElement = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                try {
+                    renderMathInElement(targetElement, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false }
+                        ],
+                        throwOnError: false
+                    });
+                } catch (err) {
+                    console.warn('KaTeX render warning:', err);
+                }
+            }
+        }
+
+        // ==========================================
+        // 2. Projector Slides Repository (Clean LaTeX)
+        // ==========================================
+        const projectorSlides = {
+            stage1: {
+                title: '階段 $1$｜閉合電路與大富翁「等勢」類比',
+                question: '1. 【電路基本構成與電源作用】：「望住工作紙階段 $1$ 幅大富翁電路圖，閉合電路有邊幾樣基本部分？粒 $12\\text{ V}$ 電池（起點 GO）擔當咩角色？」\n\n2. 【大富翁類比『等勢』與歸零終點】：「設電池負極為 $0\\text{ V}$ 參考點，電荷經過起點『GO』拎到 $\\$12$ 資金（$12\\text{ V}$ 高電勢）之後，沿住無起樓嘅空地（理想導線）行，資金有冇變？點樣判斷電路邊啲地方係『等勢』？踩中電阻『物業交租』之後，行完一圈回到電池負極嗰陣，電勢會降至幾多（即與負極之間的電勢差／電壓為幾多）？」\n\n3. 【扣連 Mock 痛點】：「做完熱身前測第 $1$、$2$ 題後諗下：點解 Mock 卷有同學會直接將 $12\\text{ V}$ 除以某一個電阻？」',
+                hint: '核心結論：設電池負極為 $0\\text{ V}$ 參考點，電池為電荷提供電勢能；凡由理想導線直接相連、中間無跨過任何電阻或電源的位置，電勢必定相同（等勢，$\\Delta V = 0\\text{ V}$），而電荷回到電池負極時電勢必降至 $0\\text{ V}$（即與負極的電勢差／電壓為 $0\\text{ V}$）！'
+            },
+            stage2: {
+                title: '階段 $2$｜三色 LED 等勢地圖與電壓判準',
+                question: '【Part A：教具 ① 串聯，對應遊戲「南區」】\n1. 「亮燈後（$\\text{LED } 1$ 粉紅 $\\rightarrow$ $\\text{LED } 2$ 黃 $\\rightarrow$ $\\text{LED } 3$ 藍），點解同一段導線由頭到尾完全同色，唔會漸變？如果我將伏特計並聯夾喺 $\\text{LED } 1$ 頭尾兩點，度出嚟嘅電壓係幾多？」\n\n【Part B：教具 ② 並聯，對應遊戲「東區」與「西區」】\n2. 「望住教具 ②，唔好計數！純粹睇顏色，$R_1$ 支路同 $(R_2 + R_3)$ 支路各自跨接邊兩隻色？點解呢幅顏色圖已經足夠證明 $V_{R1} = V_{R2} + V_{R3}$？」',
+                hint: '關鍵結論：同一導線同色（等勢），伏特計跨接同色讀數為 $0\\text{ V}$；$R_1$ 與 $(R_2 + R_3)$ 均跨接粉紅（$\\text{LED } 4$）與藍色（$\\text{LED } 6$），起終點同色故兩端電壓必然相等。'
+            },
+            stage2_sum: {
+                title: '階段 $2$ 小總結｜視覺電壓判斷三法則',
+                question: '1. 同一導線同色（等勢）：無電阻理想導線兩端電壓必為 $\\Delta V = 0\\text{ V}$，只有經過電阻才會轉色。\n\n2. 串聯分壓（梯級轉色）：電流處處相等，電阻愈大所佔電壓（色差）愈大。\n\n3. 並聯等壓（跨接同色）：只要兩條支路起點同色、終點同色，兩端電壓必然相等！',
+                hint: '下一步：學識睇顏色分辨電壓之後，點樣將每種顏色轉成具體伏特數（$\\text{V}$），再代入歐姆定律 $I = \\Delta V / R$ 計電流？'
+            },
+            stage3_sum: {
+                title: '階段 $3$ 小總結｜歐姆定律「兩步法」',
+                question: 'Step 1【先定電壓 $\\Delta V$】：\n透過節點顏色找出元件兩端電勢，相減得出該元件承受的真實電壓 $\\Delta V$。\n（同色等勢則 $\\Delta V = 0\\text{ V}$；直接跨接粉紅與藍色兩極者，$\\Delta V$ 才等於電源總電壓！）\n\nStep 2【再求電流 $I$】：\n將已確定的 $\\Delta V$ 代入歐姆定律：\n$$I = \\frac{\\Delta V}{R}$$',
+                hint: '口訣：先看兩端色差定電壓 $\\Delta V$，再除自身電阻 $R$ 求電流 $I$！'
+            },
+            stage4: {
+                title: '階段 $4$｜等勢分區拆解混聯電路電壓',
+                question: '1. 【步驟一：先看顏色定結構】：「望住任務三嘅混聯圖，粉紅色到黃色之間包住邊兩個電阻？黃色到藍色之間又係邊個電阻？邊兩個電阻兩端電壓一定相等？」\n\n2. 【步驟二：先算電壓再用歐姆定律】：「計出 $\\text{PQ}$ 並聯等效電阻 $R_{PQ} = 2.0\\ \\Omega$ 同總電阻 $R_{\\text{總}} = 5.0\\ \\Omega$ 之後，總電流係 $I_{\\text{總}} = 2.4\\text{ A}$。咁幹路 $R_3 = 3.0\\ \\Omega$ 食咗幾多伏特電壓？剩低畀 $\\text{PQ}$ 並聯區（黃色至粉紅色）嘅電壓又係幾多伏特？點樣用歐姆定律計出下支路 $R_2$ 嘅電流？」',
+                hint: '關鍵突破：先用 $V_{R3} = I_{\\text{總}} R_3 = 2.4 \\times 3.0 = 7.2\\text{ V}$ 找出黃色節點電勢為 $4.8\\text{ V}$，確定 $\\text{PQ}$ 並聯區電壓 $\\Delta V_{PQ} = 4.8\\text{ V}$ 後，再用 $I_{R2} = 4.8 / 4.0 = 1.2\\text{ A}$！'
+            },
+            stage4_sum: {
+                title: '階段 $4$ 小總結｜混聯電路電壓拆解「三步法」',
+                question: 'Step 1【填色分區】：標出粉紅（高）、黃（中）、藍（低），跨接相同兩色者為並聯等壓區塊。\n\nStep 2【求總阻與總電流】：合併並聯等效電阻，求全電路總電阻 $R_{\\text{總}}$ 與幹線總電流 $I_{\\text{總}}$。\n\nStep 3【逐區定電壓 $\\rightarrow$ 歐姆定律】：先計算各色區間承受的電壓 $\\Delta V$，再代入 $I = \\Delta V / R$ 求個別支路電流！',
+                hint: '準備實戰：接下來 $6$ 分鐘用這三步法挑戰《電路四區圖鑑》小遊戲！'
+            },
+            stage5: {
+                title: '階段 $5$｜《電路四區圖鑑》限時闖關',
+                question: '1. 「打開《電路四區》小遊戲，限時 $6$ 分鐘挑戰『南區串聯、東區並聯、北區開關等勢及西區串並聯混聯』四個關卡！遇阻時可以撳開右上角《常見考試電路圖鑑》，先用等勢分色法判斷各元件兩端電壓 $\\Delta V$，再用歐姆定律 $I = \\Delta V / R$ 計算。」\n\n2. 「過關之後，喺工作紙任務四最後一欄寫低：今日學識邊一個判斷電壓嘅步驟，最幫你破解到之前 Mock 嘅盲點？」',
+                hint: '下節預告：承接今日北區單一開關所學，下堂課我哋會進階探討「多開關斷開與閉合的動態切換」及「電池內電阻（$r$）與非理想電錶」對節點電勢的影響！'
+            },
+            final_sum: {
+                title: '課堂總結（$33\\text{–}35$ 分鐘）｜全課收束與變式快問',
+                question: '1. 【全課核心原理總結】\n• 理想導線零電阻 $\\Rightarrow$ 同色等勢（$\\Delta V = 0\\text{ V}$）\n• 先透過顏色分區判斷元件兩端電壓 $\\Delta V$，再代入歐姆定律 $I = \\Delta V / R$ 進行電路分析\n\n2. 【總結快速變式提問】\n「喺一個 $12\\text{ V}$ 串聯電路入面，如果 $R_1$ 兩端電壓係 $4\\text{ V}$，咁串聯喺後面嘅 $R_2$ 兩端電壓係幾多？如果將 $R_2$ 換成電阻值更大嘅電阻，佢分得嘅電壓會變大定變細？點解？」\n\n3. 【下節預告】\n承接北區所學，下堂課將進階探討「多開關斷開與閉合的動態切換」及「電池內電阻（$r$）與非理想電錶」對節點電勢的影響。',
+                hint: '變式答案：$R_2$ 兩端電壓為 $8\\text{ V}$；換成電阻值更大的電阻後，在相同電流下根據 $V = IR$，它分得的電壓會變大（中間黃色節點電勢會更接近粉紅色）。'
+            }
+        };
+
+        // ==========================================
+        // 3. 35-Minute Lesson Timer & Stage Sync
+        // ==========================================
+        let elapsedSeconds = 0;
+        const totalSeconds = 35 * 60; // 2100 seconds
+        let timerInterval = null;
+        let isRunning = false;
+
+        const stagesConfig = [
+            { id: 1, startMin: 0, endMin: 3, label: '階段 1｜引入診斷' },
+            { id: 2, startMin: 3, endMin: 12, label: '階段 2｜LED 等勢圖' },
+            { id: 3, startMin: 12, endMin: 19, label: '階段 3｜電壓與歐姆定律' },
+            { id: 4, startMin: 19, endMin: 27, label: '階段 4｜混聯電壓拆解' },
+            { id: 5, startMin: 27, endMin: 35, label: '階段 5｜實戰闖關評估' }
+        ];
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function updateTimerUI() {
+            const display = document.getElementById('timer-display');
+            const progressBar = document.getElementById('timeline-progress-bar');
+            const stageLabel = document.getElementById('timer-stage-label');
+
+            display.innerHTML = `${formatTime(elapsedSeconds)} <span class="text-xs font-normal text-slate-400">/ 35:00</span>`;
+            const pct = Math.min(100, (elapsedSeconds / totalSeconds) * 100);
+            progressBar.style.width = `${pct}%`;
+
+            const currentMin = elapsedSeconds / 60;
+            let activeStage = stagesConfig[4];
+            for (const st of stagesConfig) {
+                if (currentMin >= st.startMin && currentMin < st.endMin) {
+                    activeStage = st;
+                    break;
+                }
+            }
+
+            if (elapsedSeconds >= totalSeconds) {
+                stageLabel.textContent = '課節完成｜35:00 結束';
+                display.classList.remove('text-emerald-600');
+                display.classList.add('text-amber-600');
+            } else {
+                stageLabel.textContent = activeStage.label;
+                display.classList.add('text-emerald-600');
+                display.classList.remove('text-amber-600');
+            }
+
+            stagesConfig.forEach(st => {
+                const pill = document.getElementById(`nav-stage-${st.id}`);
+                const card = document.getElementById(`stage-card-${st.id}`);
+                if (st.id === activeStage.id) {
+                    pill.className = 'stage-pill text-left px-2.5 py-1.5 rounded-lg bg-indigo-50 border border-indigo-400 text-indigo-900 font-bold transition truncate';
+                    if (card) {
+                        card.classList.add('active-stage', 'border-2', 'border-indigo-500');
+                        card.classList.remove('border', 'border-slate-200');
+                    }
+                } else {
+                    pill.className = 'stage-pill text-left px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-medium transition hover:bg-slate-200/70 truncate';
+                    if (card) {
+                        card.classList.remove('active-stage', 'border-2', 'border-indigo-500');
+                        card.classList.add('border', 'border-slate-200');
+                    }
+                }
+            });
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('btn-timer-toggle');
+            const icon = document.getElementById('icon-timer-toggle');
+            const text = document.getElementById('text-timer-toggle');
+
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                btn.classList.remove('bg-amber-600', 'hover:bg-amber-500');
+                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+                icon.className = 'fa-solid fa-play';
+                text.textContent = '繼續';
+            } else {
+                isRunning = true;
+                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+                btn.classList.add('bg-amber-600', 'hover:bg-amber-500');
+                icon.className = 'fa-solid fa-pause';
+                text.textContent = '暫停';
+                timerInterval = setInterval(() => {
+                    if (elapsedSeconds < totalSeconds) {
+                        elapsedSeconds++;
+                        updateTimerUI();
+                    } else {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        showToast('35 分鐘課節時間到！');
+                    }
+                }, 1000);
+            }
+        }
+
+        function adjustTime(deltaSec) {
+            elapsedSeconds = Math.max(0, Math.min(totalSeconds, elapsedSeconds + deltaSec));
+            updateTimerUI();
+        }
+
+        function resetTimer() {
+            if (isRunning) toggleTimer();
+            elapsedSeconds = 0;
+            document.getElementById('text-timer-toggle').textContent = '開始';
+            updateTimerUI();
+        }
+
+        function jumpToStage(stageId, startMinutes) {
+            switchTab('flow');
+            elapsedSeconds = startMinutes * 60;
+            updateTimerUI();
+            const card = document.getElementById(`stage-card-${stageId}`);
+            if (card) {
+                const yOffset = -125;
+                const y = card.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+
+        // ==========================================
+        // 4. Left-Hand Sidebar Tab Switching
+        // ==========================================
+        function switchTab(tabName) {
+            const tabs = ['pgde', 'flow', 'constructivism', 'matrix', 'game'];
+            tabs.forEach(t => {
+                const panel = document.getElementById(`tab-panel-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (!panel || !btn) return;
+                if (t === tabName) {
+                    panel.classList.remove('hidden');
+                    btn.className = 'tab-btn w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm bg-indigo-600 text-white shadow-sm transition flex items-center gap-2.5';
+                } else {
+                    panel.classList.add('hidden');
+                    btn.className = 'tab-btn w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm bg-white text-slate-700 hover:bg-slate-100 transition flex items-center gap-2.5';
+                }
+            });
+            renderAllMath();
+        }
+
+        // ==========================================
+        // 5. Projector, QR Code & Random Picker Modals
+        // ==========================================
+        function openProjector(slideKey) {
+            const slide = projectorSlides[slideKey];
+            if (!slide) return;
+
+            const titleEl = document.getElementById('projector-title');
+            const qEl = document.getElementById('projector-question');
+            const hEl = document.getElementById('projector-hint');
+
+            titleEl.textContent = slide.title;
+            qEl.textContent = slide.question;
+            hEl.textContent = slide.hint;
+            hEl.classList.add('hidden');
+
+            const modal = document.getElementById('projector-modal');
+            modal.classList.remove('hidden');
+            renderAllMath(modal);
+        }
+
+        function toggleProjectorHint() {
+            const hEl = document.getElementById('projector-hint');
+            hEl.classList.toggle('hidden');
+            renderAllMath(hEl);
+        }
+
+        function openQrModal() {
+            const modal = document.getElementById('qr-modal');
+            modal.classList.remove('hidden');
+            renderAllMath(modal);
+        }
+
+        function openPickerModal() {
+            const modal = document.getElementById('picker-modal');
+            modal.classList.remove('hidden');
+            renderAllMath(modal);
+        }
+
+        function closeModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (el) el.classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                ['projector-modal', 'qr-modal', 'picker-modal'].forEach(closeModal);
+            }
+        });
+
+        ['projector-modal', 'qr-modal', 'picker-modal'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('click', (e) => {
+                    if (e.target === el) closeModal(id);
+                });
+            }
+        });
+
+        // ==========================================
+        // 6. QR Code Generation & Clipboard Copy
+        // ==========================================
+        function initQRCodes() {
+            const wsUrl = 'https://v5kh2ndvkk-web.github.io/circuit_ws/';
+            const gameUrl = 'https://v5kh2ndvkk-web.github.io/circuit/';
+
+            const targets = [
+                { id: 'inline-ws-qrcode', url: wsUrl, size: 135 },
+                { id: 'inline-qrcode', url: gameUrl, size: 135 },
+                { id: 'modal-ws-qrcode', url: wsUrl, size: 195 },
+                { id: 'modal-qrcode', url: gameUrl, size: 195 }
+            ];
+
+            if (typeof QRCode !== 'undefined') {
+                targets.forEach(item => {
+                    const box = document.getElementById(item.id);
+                    if (box) {
+                        box.innerHTML = '';
+                        new QRCode(box, {
+                            text: item.url,
+                            width: item.size,
+                            height: item.size,
+                            colorDark: '#0f172a',
+                            colorLight: '#ffffff',
+                            correctLevel: QRCode.CorrectLevel.M
+                        });
+                    }
+                });
+            }
+        }
+
+        function copyUrlById(inputId, successMsg) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.select();
+            input.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                showToast(successMsg);
+            } catch (err) {
+                showToast('請手動選取網址複製');
+            }
+        }
+
+        // ==========================================
+        // 7. Toast Banner & Random Student Picker
+        // ==========================================
+        let toastTimer = null;
+        function showToast(msg) {
+            const banner = document.getElementById('toast-banner');
+            const msgEl = document.getElementById('toast-message');
+            if (!banner || !msgEl) return;
+            msgEl.textContent = msg;
+            banner.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                banner.classList.add('translate-y-20', 'opacity-0');
+            }, 2800);
+        }
+
+        let pickedNumbers = [];
+        let isRolling = false;
+
+        function updatePickerHistoryUI() {
+            const historyBox = document.getElementById('picker-history');
+            if (!historyBox) return;
+            if (pickedNumbers.length === 0) {
+                historyBox.innerHTML = '<span class="text-slate-400">尚未抽取</span>';
+                return;
+            }
+            historyBox.innerHTML = pickedNumbers
+                .map(n => `<span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold">${String(n).padStart(2, '0')} 號</span>`)
+                .join('');
+        }
+
+        function pickRandomStudent() {
+            if (isRolling) return;
+            const maxInput = document.getElementById('picker-max');
+            const maxStudents = Math.max(1, Math.min(50, parseInt(maxInput.value, 10) || 17));
+
+            const available = [];
+            for (let i = 1; i <= maxStudents; i++) {
+                if (!pickedNumbers.includes(i)) available.push(i);
+            }
+            if (available.length === 0) {
+                pickedNumbers = [];
+                for (let i = 1; i <= maxStudents; i++) available.push(i);
+                showToast('全班學號已抽完一輪，自動重新洗牌！');
+            }
+
+            isRolling = true;
+            const numEl = document.getElementById('picker-result-number');
+            const statusEl = document.getElementById('picker-result-class');
+            statusEl.textContent = '正在隨機抽取中六同學...';
+
+            let ticks = 0;
+            const rollTimer = setInterval(() => {
+                const randPreview = Math.floor(Math.random() * maxStudents) + 1;
+                numEl.textContent = `${String(randPreview).padStart(2, '0')} 號`;
+                ticks++;
+                if (ticks >= 14) {
+                    clearInterval(rollTimer);
+                    const chosen = available[Math.floor(Math.random() * available.length)];
+                    pickedNumbers.push(chosen);
+                    numEl.textContent = `${String(chosen).padStart(2, '0')} 號`;
+                    statusEl.textContent = `中六班｜抽中第 ${chosen} 號同學`;
+                    updatePickerHistoryUI();
+                    isRolling = false;
+                }
+            }, 55);
+        }
+
+        function clearPickedHistory() {
+            pickedNumbers = [];
+            updatePickerHistoryUI();
+            document.getElementById('picker-result-number').textContent = '--';
+            document.getElementById('picker-result-class').textContent = '已清除紀錄，準備抽籤';
+        }
+
+        // ==========================================
+        // 8. Initialize on Page Load
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTimerUI();
+            initQRCodes();
+            renderAllMath();
+        });
+
+        window.addEventListener('load', () => {
+            renderAllMath();
+        });
+    </script>
+</body>
+</html>
